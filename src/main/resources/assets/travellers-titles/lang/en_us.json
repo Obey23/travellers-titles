@@ -1,0 +1,46 @@
+{
+  "biome_tracker.temperature": "Temperature",
+  "biome_tracker.rarity": "Rarity",
+  "biome_tracker.size": "Size",
+
+  "biome_tracker.rarity.common": "Common",
+  "biome_tracker.rarity.uncommon": "Uncommon",
+  "biome_tracker.rarity.rare": "Rare",
+  "biome_tracker.rarity.unknown": "Unknown",
+
+  "biome_tracker.size.small": "Small",
+  "biome_tracker.size.normal": "Normal",
+  "biome_tracker.size.large": "Large",
+  "biome_tracker.size.unknown": "Unknown",
+
+  "biome_tracker.config.title": "Biome Tracker Settings",
+
+  "biome_tracker.config.category.title": "Title",
+  "biome_tracker.config.category.subtitle": "Subtitle",
+  "biome_tracker.config.category.general": "General",
+
+  "biome_tracker.config.title.default_size": "Default size",
+  "biome_tracker.config.title.scale": "Custom scale",
+
+  "biome_tracker.config.subtitle.default_size": "Default size",
+  "biome_tracker.config.subtitle.scale": "Custom scale",
+
+  "biome_tracker.config.gui_scale": "Scale with GUI scale",
+  "biome_tracker.config.gui_scale.tooltip": "When enabled, text scales relative to GUI scale 3. When disabled, the custom scale multipliers are used.",
+
+  "biome_tracker.config.notification_at_top": "Display notification at top of screen",
+  "biome_tracker.config.notification_at_top.tooltip": "When enabled, tooltips show at the top of your screen rather than the centre.",
+
+  "biome_tracker.config.rarity_as_stars": "Display rarity as stars",
+
+  "biome_tracker.config.confirmation_delay": "Biome confirmation delay (ms)",
+  "biome_tracker.config.notification_cooldown": "Notification cooldown (ms)",
+
+  "biome_tracker.config.temperature_display_mode": "Temperature Display",
+  "biome_tracker.config.temperature_unit": "Temperature Unit",
+  "biome_tracker.config.temperature_display_mode.minecraft": "Minecraft Value",
+  "biome_tracker.config.temperature_display_mode.real_world": "Real-world Estimate",
+  "biome_tracker.config.temperature_display_mode.fires": "Fires",
+  "biome_tracker.config.temperature_unit.celsius": "Celsius",
+  "biome_tracker.config.temperature_unit.fahrenheit": "Fahrenheit"
+}

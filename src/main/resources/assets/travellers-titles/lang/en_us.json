@@ -42,5 +42,12 @@
   "biome_tracker.config.temperature_display_mode.real_world": "Real-world Estimate",
   "biome_tracker.config.temperature_display_mode.fires": "Fires",
   "biome_tracker.config.temperature_unit.celsius": "Celsius",
-  "biome_tracker.config.temperature_unit.fahrenheit": "Fahrenheit"
+  "biome_tracker.config.temperature_unit.fahrenheit": "Fahrenheit",
+
+  "biome_tracker.config.category.sounds": "Custom Biome Sounds",
+  "biome_tracker.config.sounds.entries": "Biome sound overrides",
+  "biome_tracker.config.sounds.biome_id": "Biome ID",
+  "biome_tracker.config.sounds.sound_id": "Sound ID",
+  "biome_tracker.config.sounds.volume": "Volume",
+  "biome_tracker.config.sounds.pitch": "Pitch"
 }

@@ -41,7 +41,16 @@ public final class BiomeConfig {
     public int biomeConfirmationDelayMs = 1500;
     public int biomeNotificationCooldownMs = 2000;
 
-    public List<BiomeSoundEntry> customBiomeSounds = new ArrayList<>();
+    public static List<BiomeSoundEntry> createDefaultBiomeSounds() {
+        return new ArrayList<>(List.of(
+                new BiomeSoundEntry("minecraft:cherry_grove", "minecraft:block.amethyst_block.chime", 1.5F, 1.0F),
+                new BiomeSoundEntry("minecraft:deep_dark", "minecraft:ambient.cave", 0.8F, 0.5F),
+                new BiomeSoundEntry("minecraft:pale_garden", "minecraft:entity.creaking.death", 0.8F, 0.5F),
+                new BiomeSoundEntry("minecraft:dappled_forest", "minecraft:block.poplar_leaves.hit", 0.8F, 1.0F)
+        ));
+    }
+
+    public List<BiomeSoundEntry> customBiomeSounds = createDefaultBiomeSounds();
 
     private BiomeConfig() {}
 

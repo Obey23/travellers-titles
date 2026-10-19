@@ -4,28 +4,43 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-
-import java.util.Map;
+import com.obqy.config.BiomeConfig;
 
 public final class BiomeSoundManager {
     private BiomeSoundManager() {}
 
     private record BiomeSound(SoundEvent sound, float volume, float pitch) {}
 
-    private static final Map<String, BiomeSound> CUSTOM_BIOME_SOUNDS = Map.of(
-            "minecraft:cherry_grove", new BiomeSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.8F, 1.0F),
-            "minecraft:deep_dark", new BiomeSound(SoundEvents.AMBIENT_CAVE.value(), 0.8F, 0.5F),
-            "minecraft:mushroom_fields", new BiomeSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.8F, 1.5F),
-            "minecraft:pale_garden", new BiomeSound(SoundEvents.CREAKING_DEATH, 0.8F, 0.5F),
-            "minecraft:dappled_forest", new BiomeSound(SoundEvents.POPLAR_LEAVES_HIT, 0.8F, 1.0F)
-    );
+    private static BiomeSoundEntry findCustomSound(String biomeId) {
+        return BiomeConfig.INSTANCE.customBiomeSounds.stream()
+                .filter(entry -> entry != null)
+                .filter(entry -> biomeId.equals(entry.biomeId))
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    private static SoundEvent resolveSound(String soundId) {
+        if (soundId == null || soundId.isBlank()) return null;
+
+        try {
+            return net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT
+                    .getOptional(net.minecraft.resources.Identifier.parse(soundId))
+                    .orElse(null);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
 
     public static void playBiomeSound(Minecraft client, String biomeId, BiomeInfo.BiomeRarity rarity) {
-        BiomeSound customSound = CUSTOM_BIOME_SOUNDS.get(biomeId);
+        BiomeSoundEntry customSound = findCustomSound(biomeId);
 
         if (customSound != null) {
-            play(client, customSound);
-            return;
+            SoundEvent sound = resolveSound(customSound.soundId);
+            if (sound != null) {
+                play(client, new BiomeSound(sound, customSound.volume, customSound.pitch));
+                return;
+            }
         }
 
         BiomeSound raritySound = switch (rarity) {

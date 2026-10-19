@@ -1,12 +1,19 @@
 
 package com.obqy.config;
 
+import com.obqy.biomes.BiomeSoundEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import me.shedaniel.clothconfig2.gui.entries.MultiElementListEntry;
+import me.shedaniel.clothconfig2.gui.entries.NestedListListEntry;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public final class BiomeConfigScreen {
 
@@ -128,6 +135,65 @@ public final class BiomeConfigScreen {
                         .setMax(5.0F)
                         .setSaveConsumer(value -> config.subtitleScale = value)
                         .build()
+        );
+
+        ConfigCategory soundCategory = builder.getOrCreateCategory(Component.translatable("biome_tracker.config.category.sounds"));
+
+        soundCategory.addEntry(
+                new NestedListListEntry<BiomeSoundEntry, MultiElementListEntry<BiomeSoundEntry>>(
+                        Component.translatable("biome_tracker.config.sounds.entries"),
+                        new ArrayList<>(config.customBiomeSounds),
+                        true,
+                        Optional::empty,
+                        list -> config.customBiomeSounds = new ArrayList<>(list),
+                        BiomeConfig::createDefaultBiomeSounds,
+                        entries.getResetButtonKey(),
+                        true,
+                        true,
+                        (sound, _) -> {
+                            BiomeSoundEntry value = sound != null ? sound : new BiomeSoundEntry(
+                                    "minecraft:a_biome",
+                                    "minecraft:some.minecraft.sound",
+                                    0.8F,
+                                    1.0F
+                            );
+
+                            return new MultiElementListEntry<>(
+                                    Component.literal(value.biomeId == null ? "Biome sound" : value.biomeId),
+                                    value,
+                                    List.of(
+                                            entries.startStrField(Component.translatable(
+                                                                    "biome_tracker.config.sounds.biome_id"
+                                                            ), value.biomeId)
+                                                    .setSaveConsumer(v -> value.biomeId = v.trim())
+                                                    .build(),
+
+                                            entries.startStrField(Component.translatable(
+                                                                    "biome_tracker.config.sounds.sound_id"
+                                                            ), value.soundId)
+                                                    .setSaveConsumer(v -> value.soundId = v.trim())
+                                                    .build(),
+
+                                            entries.startFloatField(Component.translatable(
+                                                                    "biome_tracker.config.sounds.volume"
+                                                            ), value.volume)
+                                                    .setMin(0.0F)
+                                                    .setMax(2.0F)
+                                                    .setSaveConsumer(v -> value.volume = v)
+                                                    .build(),
+
+                                            entries.startFloatField(Component.translatable(
+                                                                    "biome_tracker.config.sounds.pitch"
+                                                            ), value.pitch)
+                                                    .setMin(0.5F)
+                                                    .setMax(2.0F)
+                                                    .setSaveConsumer(v -> value.pitch = v)
+                                                    .build()
+                                    ),
+                                    true
+                            );
+                        }
+                )
         );
 
         return builder.build();

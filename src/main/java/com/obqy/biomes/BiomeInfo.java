@@ -104,6 +104,7 @@ public record BiomeInfo(BiomeRarity rarity, BiomeSize size) {
             entry("mushroom_fields", BiomeRarity.RARE, BiomeSize.SMALL),
             entry("ice_spikes", BiomeRarity.RARE, BiomeSize.NORMAL),
             entry("pale_garden", BiomeRarity.RARE, BiomeSize.NORMAL),
+            entry("dappled_forest", BiomeRarity.RARE, BiomeSize.NORMAL),
 
             // Underground
             entry("dripstone_caves", BiomeRarity.COMMON, BiomeSize.NORMAL),

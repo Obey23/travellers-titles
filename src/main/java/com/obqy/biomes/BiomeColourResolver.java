@@ -123,6 +123,38 @@ public final class BiomeColourResolver {
             );
         }
 
+        // Sulfur Caves: muted sulfur yellow -> vivid toxic yellow.
+        if (path.contains("sulfur_caves")) {
+            return temperatureColour(
+                    temperature, 0.8f, 2.0f,
+                    0xA6A33A, 0xEFFF72
+            );
+        }
+
+        // Dripstone Caves: muted reddish grey -> warm dripstone red.
+        if (path.contains("dripstone_caves")) {
+            return temperatureColour(
+                    temperature, 0.8f, 2.0f,
+                    0x8F7778, 0xC96F65
+            );
+        }
+
+        // Lush Caves: soft azalea pink -> vibrant spore-blossom pink.
+        if (path.contains("lush_caves")) {
+            return temperatureColour(
+                    temperature, 0.8f, 2.0f,
+                    0xC77DAA, 0xFFB5D9
+            );
+        }
+
+        // Deep Dark: deep sculk blue -> luminous sculk aqua.
+        if (path.contains("deep_dark")) {
+            return temperatureColour(
+                    temperature, 0.8f, 2.0f,
+                    0x263B70, 0x55F2D0
+            );
+        }
+
         // Default for plains and other unclassified biomes.
         return temperatureColour(
                 temperature, -0.5f, 2.0f,

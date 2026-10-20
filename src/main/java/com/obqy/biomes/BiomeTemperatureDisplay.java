@@ -1,5 +1,6 @@
-package com.obqy.config;
+package com.obqy.biomes;
 
+import com.obqy.config.BiomeConfig;
 import net.minecraft.network.chat.Component;
 
 import java.util.Locale;

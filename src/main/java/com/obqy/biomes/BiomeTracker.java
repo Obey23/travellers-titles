@@ -1,7 +1,6 @@
 package com.obqy.biomes;
 
 import com.obqy.config.BiomeConfig;
-import com.obqy.config.BiomeTemperatureDisplay;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;

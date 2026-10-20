@@ -2,6 +2,8 @@
 package com.obqy.config;
 
 import com.obqy.biomes.BiomeSoundEntry;
+import com.obqy.biomes.TemperatureDisplayMode;
+import com.obqy.biomes.TemperatureUnit;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;

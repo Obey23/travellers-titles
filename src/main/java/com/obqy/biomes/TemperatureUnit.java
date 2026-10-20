@@ -1,4 +1,4 @@
-package com.obqy.config;
+package com.obqy.biomes;
 
 public enum TemperatureUnit {
     CELSIUS,

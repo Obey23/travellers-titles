@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.obqy.TravellersTitles;
 import com.obqy.biomes.BiomeSoundEntry;
+import com.obqy.biomes.TemperatureDisplayMode;
+import com.obqy.biomes.TemperatureUnit;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;

@@ -80,6 +80,7 @@ public record BiomeInfo(BiomeRarity rarity, BiomeSize size) {
             entry("windswept_forest", BiomeRarity.UNCOMMON, BiomeSize.NORMAL),
             entry("windswept_gravelly_hills", BiomeRarity.UNCOMMON, BiomeSize.NORMAL),
             entry("windswept_savanna", BiomeRarity.UNCOMMON, BiomeSize.NORMAL),
+            entry("savanna_plateau", BiomeRarity.UNCOMMON, BiomeSize.NORMAL),
             entry("cherry_grove", BiomeRarity.UNCOMMON, BiomeSize.SMALL),
             entry("bamboo_jungle", BiomeRarity.UNCOMMON, BiomeSize.NORMAL),
             entry("sparse_jungle", BiomeRarity.UNCOMMON, BiomeSize.NORMAL),
@@ -110,6 +111,8 @@ public record BiomeInfo(BiomeRarity rarity, BiomeSize size) {
             entry("dripstone_caves", BiomeRarity.COMMON, BiomeSize.NORMAL),
             entry("lush_caves", BiomeRarity.UNCOMMON, BiomeSize.NORMAL),
             entry("deep_dark", BiomeRarity.RARE, BiomeSize.NORMAL),
+            entry("sulfur_caves", BiomeRarity.RARE, BiomeSize.NORMAL),
+            //entry("ice_caves", BiomeRarity.RARE, BiomeSize.NORMAL),
 
             // Nether
             entry("nether_wastes", BiomeRarity.COMMON, BiomeSize.LARGE),

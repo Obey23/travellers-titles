@@ -42,8 +42,7 @@ public final class BiomeColourResolver {
         // Forests, taigas, jungles and bamboo jungles.
         if (path.contains("forest")
                 || path.contains("taiga")
-                || path.contains("jungle")
-                || path.contains("grove")) {
+                || path.contains("jungle")) {
             return temperatureColour(
                     temperature, -0.5f, 1.2f,
                     0x24543B, 0x72D85A
@@ -64,7 +63,8 @@ public final class BiomeColourResolver {
                 || path.contains("frozen")
                 || path.contains("ice_spikes")
                 || path.contains("jagged_peaks")
-                || path.contains("stony_peaks")) {
+                || path.contains("stony_peaks")
+                || path.contains("grove")) {
             return temperatureColour(
                     temperature, -0.7f, 0.5f,
                     0xBDEBFF, 0x2866A5

@@ -1,5 +1,4 @@
-# 🗺️ Travellers Titles [Fabric]
-
+![Traveller's Titles](https://cdn.modrinth.com/data/cached_images/e39203415300cf11320672adea7a302e098e4cb8_0.webp)\
 [![Minecraft Version](https://img.shields.io/badge/Minecraft-26.3-blue.svg)](https://minecraft.net/)
 [![Mod Loader](https://img.shields.io/badge/Loader-Fabric-orange.svg)](https://fabricmc.net/)
 ![GitHub License](https://img.shields.io/github/license/Obey23/travellers-titles)

@@ -20,7 +20,7 @@ public final class BiomeConfig {
             new GsonBuilder().setPrettyPrinting().create();
 
     private static final Path FILE = FabricLoader.getInstance()
-            .getConfigDir().resolve("biome-tracker.json");
+            .getConfigDir().resolve("travellers-titles.json");
 
     public static BiomeConfig INSTANCE = new BiomeConfig();
 
@@ -65,7 +65,7 @@ public final class BiomeConfig {
                     INSTANCE.customBiomeSounds = new ArrayList<>();
                 }
             } catch (Exception e) {
-                TravellersTitles.LOGGER.error("Could not load biome-tracker.json: {}", e.getMessage());
+                TravellersTitles.LOGGER.error("Could not load config: {}", e.getMessage());
             }
         }
 
@@ -76,7 +76,7 @@ public final class BiomeConfig {
         try {
             Files.writeString(FILE, GSON.toJson(INSTANCE));
         } catch (IOException e) {
-            TravellersTitles.LOGGER.error("Could not save biome-tracker.json: {}", e.getMessage());
+            TravellersTitles.LOGGER.error("Could not save config: {}", e.getMessage());
         }
     }
 }

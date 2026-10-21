@@ -49,6 +49,14 @@ public final class BiomeColourResolver {
             );
         }
 
+        // Cherry grove.
+        if (path.contains("cherry_grove")) {
+            return temperatureColour(
+                    temperature, 0.0f, 1.0f,
+                    0xD982A8, 0xFFC2D9
+            );
+        }
+
         // Deserts and badlands.
         if (path.contains("desert")
                 || path.contains("badlands")) {

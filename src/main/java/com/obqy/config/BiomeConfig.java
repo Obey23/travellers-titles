@@ -16,12 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class BiomeConfig {
-    private static final Gson GSON =
-            new GsonBuilder().setPrettyPrinting().create();
-
-    private static final Path FILE = FabricLoader.getInstance()
-            .getConfigDir().resolve("travellers-titles.json");
-
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Path FILE = FabricLoader.getInstance().getConfigDir().resolve("travellers-titles.json");
     public static BiomeConfig INSTANCE = new BiomeConfig();
 
     // Title Settings
@@ -36,9 +32,11 @@ public final class BiomeConfig {
     public boolean scaleWithGuiScale = true;
     public boolean notificationAtTop = false;
     public boolean rarityAsStars = false;
+
     // Confirmation (before showing popup)
     public int biomeConfirmationDelayMs = 1500;
     public int biomeNotificationCooldownMs = 2000;
+
     // Temperature Display
     public TemperatureDisplayMode temperatureDisplayMode = TemperatureDisplayMode.MINECRAFT;
     public TemperatureUnit temperatureUnit = TemperatureUnit.CELSIUS;
@@ -53,6 +51,7 @@ public final class BiomeConfig {
                 new BiomeSoundEntry("minecraft:sulfur_caves", "minecraft:block.potent_sulfur.geyser_eruption_active", 0.8F, 1.0F)
         ));
     }
+
     public List<BiomeSoundEntry> customBiomeSounds = createDefaultBiomeSounds();
 
     // Biome Particle Settings
@@ -63,6 +62,7 @@ public final class BiomeConfig {
     public int biomeParticleMaxSize = 3;
     public int biomeParticleDurationMS = 4000;
     public float biomeParticleAnimationSpeed = 1.0F;
+    public int wanderingParticlesSpeed = 100;
 
     private BiomeConfig() {}
 
@@ -71,9 +71,7 @@ public final class BiomeConfig {
             try {
                 BiomeConfig loaded = GSON.fromJson(Files.readString(FILE), BiomeConfig.class);
                 if (loaded != null) INSTANCE = loaded;
-                if (INSTANCE.customBiomeSounds == null) {
-                    INSTANCE.customBiomeSounds = new ArrayList<>();
-                }
+                if (INSTANCE.customBiomeSounds == null) INSTANCE.customBiomeSounds = new ArrayList<>();
             } catch (Exception e) {
                 TravellersTitles.LOGGER.error("Could not load config: {}", e.getMessage());
             }

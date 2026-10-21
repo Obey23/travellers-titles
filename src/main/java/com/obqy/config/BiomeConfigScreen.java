@@ -1,4 +1,3 @@
-
 package com.obqy.config;
 
 import com.obqy.biomes.BiomeSoundEntry;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 public final class BiomeConfigScreen {
-
     private BiomeConfigScreen() {}
 
     public static Screen build(Screen parent) {
@@ -50,45 +48,30 @@ public final class BiomeConfigScreen {
         );
 
         generalCategory.addEntry(
-                entries.startBooleanToggle(Component.translatable("travellers_titles.config.rarity_as_stars"), BiomeConfig.INSTANCE.rarityAsStars)
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.rarity_as_stars"), config.rarityAsStars)
                         .setDefaultValue(false)
-                        .setSaveConsumer(value -> BiomeConfig.INSTANCE.rarityAsStars = value)
+                        .setSaveConsumer(value -> config.rarityAsStars = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startIntSlider(
-                                Component.translatable("travellers_titles.config.confirmation_delay"),
-                                BiomeConfig.INSTANCE.biomeConfirmationDelayMs,
-                                0,
-                                10000
-                        )
+                entries.startIntSlider(Component.translatable("travellers_titles.config.confirmation_delay"), config.biomeConfirmationDelayMs, 0, 10000)
                         .setDefaultValue(1500)
-                        .setSaveConsumer(value -> BiomeConfig.INSTANCE.biomeConfirmationDelayMs = value)
+                        .setSaveConsumer(value -> config.biomeConfirmationDelayMs = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startIntSlider(
-                                Component.translatable("travellers_titles.config.notification_cooldown"),
-                                BiomeConfig.INSTANCE.biomeNotificationCooldownMs,
-                                0,
-                                30000
-                        )
+                entries.startIntSlider(Component.translatable("travellers_titles.config.notification_cooldown"), config.biomeNotificationCooldownMs, 0, 30000)
                         .setDefaultValue(2000)
-                        .setSaveConsumer(value -> BiomeConfig.INSTANCE.biomeNotificationCooldownMs = value)
+                        .setSaveConsumer(value -> config.biomeNotificationCooldownMs = value)
                         .build()
         );
 
         generalCategory.addEntry(
                 entries.startEnumSelector(Component.translatable("travellers_titles.config.temperature_display_mode"), TemperatureDisplayMode.class, config.temperatureDisplayMode)
                         .setDefaultValue(TemperatureDisplayMode.MINECRAFT)
-                        .setEnumNameProvider(value -> switch (value) {
-                            case TemperatureDisplayMode.MINECRAFT -> Component.translatable("travellers_titles.config.temperature_display_mode.minecraft");
-                            case TemperatureDisplayMode.REAL_WORLD -> Component.translatable("travellers_titles.config.temperature_display_mode.real_world");
-                            case TemperatureDisplayMode.FIRES -> Component.translatable("travellers_titles.config.temperature_display_mode.fires");
-                            default -> throw new IllegalStateException("Unexpected value: " + value);
-                        })
+                        .setEnumNameProvider(value -> Component.translatable("travellers_titles.config.temperature_display_mode." + value.name().toLowerCase(java.util.Locale.ROOT)))
                         .setSaveConsumer(value -> config.temperatureDisplayMode = value)
                         .build()
         );
@@ -96,11 +79,7 @@ public final class BiomeConfigScreen {
         generalCategory.addEntry(
                 entries.startEnumSelector(Component.translatable("travellers_titles.config.temperature_unit"), TemperatureUnit.class, config.temperatureUnit)
                         .setDefaultValue(TemperatureUnit.CELSIUS)
-                        .setEnumNameProvider(value -> switch (value) {
-                            case TemperatureUnit.CELSIUS -> Component.translatable("travellers_titles.config.temperature_unit.celsius");
-                            case TemperatureUnit.FAHRENHEIT -> Component.translatable("travellers_titles.config.temperature_unit.fahrenheit");
-                            default -> throw new IllegalStateException("Unexpected value: " + value);
-                        })
+                        .setEnumNameProvider(value -> Component.translatable("travellers_titles.config.temperature_unit." + value.name().toLowerCase(java.util.Locale.ROOT)))
                         .setSaveConsumer(value -> config.temperatureUnit = value)
                         .build()
         );
@@ -155,22 +134,14 @@ public final class BiomeConfigScreen {
         );
 
         particleCategory.addEntry(
-                entries.startIntSlider(
-                                Component.translatable("travellers_titles.config.particles.density"),
-                                config.biomeParticleDensity,
-                                0,
-                                1000
-                        )
+                entries.startIntSlider(Component.translatable("travellers_titles.config.particles.density"), config.biomeParticleDensity, 0, 1000)
                         .setDefaultValue(100)
                         .setSaveConsumer(value -> config.biomeParticleDensity = value)
                         .build()
         );
 
         particleCategory.addEntry(
-                entries.startFloatField(
-                                Component.translatable("travellers_titles.config.particles.opacity"),
-                                config.biomeParticleOpacity
-                        )
+                entries.startFloatField(Component.translatable("travellers_titles.config.particles.opacity"), config.biomeParticleOpacity)
                         .setDefaultValue(0.75F)
                         .setMin(0.0F)
                         .setMax(1.0F)
@@ -179,50 +150,39 @@ public final class BiomeConfigScreen {
         );
 
         particleCategory.addEntry(
-                entries.startIntSlider(
-                                Component.translatable("travellers_titles.config.particles.min_size"),
-                                config.biomeParticleMinSize,
-                                1,
-                                10
-                        )
+                entries.startIntSlider(Component.translatable("travellers_titles.config.particles.min_size"), config.biomeParticleMinSize, 1, 10)
                         .setDefaultValue(1)
                         .setSaveConsumer(value -> config.biomeParticleMinSize = value)
                         .build()
         );
 
         particleCategory.addEntry(
-                entries.startIntSlider(
-                                Component.translatable("travellers_titles.config.particles.max_size"),
-                                config.biomeParticleMaxSize,
-                                1,
-                                10
-                        )
+                entries.startIntSlider(Component.translatable("travellers_titles.config.particles.max_size"), config.biomeParticleMaxSize,1, 10)
                         .setDefaultValue(3)
                         .setSaveConsumer(value -> config.biomeParticleMaxSize = value)
                         .build()
         );
 
         particleCategory.addEntry(
-                entries.startIntSlider(
-                                Component.translatable("travellers_titles.config.particles.duration_ms"),
-                                config.biomeParticleDurationMS,
-                                500,
-                                15000
-                        )
+                entries.startIntSlider(Component.translatable("travellers_titles.config.particles.duration_ms"), config.biomeParticleDurationMS, 500, 15000)
                         .setDefaultValue(4000)
                         .setSaveConsumer(value -> config.biomeParticleDurationMS = value)
                         .build()
         );
 
         particleCategory.addEntry(
-                entries.startFloatField(
-                                Component.translatable("travellers_titles.config.particles.animation_speed"),
-                                config.biomeParticleAnimationSpeed
-                        )
+                entries.startFloatField(Component.translatable("travellers_titles.config.particles.animation_speed"), config.biomeParticleAnimationSpeed)
                         .setDefaultValue(1.0F)
                         .setMin(0.1F)
                         .setMax(3.0F)
                         .setSaveConsumer(value -> config.biomeParticleAnimationSpeed = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startIntSlider(Component.translatable("travellers_titles.config.particles.firefly_speed"), config.wanderingParticlesSpeed, 1, 200)
+                        .setDefaultValue(100)
+                        .setSaveConsumer(value -> config.wanderingParticlesSpeed = value)
                         .build()
         );
 

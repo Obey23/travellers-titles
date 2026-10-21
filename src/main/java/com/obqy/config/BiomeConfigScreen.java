@@ -1,8 +1,9 @@
 package com.obqy.config;
 
 import com.obqy.biomes.BiomeSoundEntry;
-import com.obqy.biomes.TemperatureDisplayMode;
-import com.obqy.biomes.TemperatureUnit;
+import com.obqy.config.enums.NotificationPosition;
+import com.obqy.config.enums.TemperatureDisplayMode;
+import com.obqy.config.enums.TemperatureUnit;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -32,18 +33,35 @@ public final class BiomeConfigScreen {
         ConfigCategory generalCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.general"));
 
         generalCategory.addEntry(
-                entries.startBooleanToggle(Component.translatable("travellers_titles.config.gui_scale"), config.scaleWithGuiScale)
-                        .setDefaultValue(true)
-                        .setTooltip(Component.translatable("travellers_titles.config.gui_scale.tooltip"))
-                        .setSaveConsumer(value -> config.scaleWithGuiScale = value)
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.show_as_toast"), config.showAsToast)
+                        .setDefaultValue(false)
+                        .setTooltip(Component.translatable("travellers_titles.config.show_as_toast.tooltip"))
+                        .setSaveConsumer(value -> config.showAsToast = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startBooleanToggle(Component.translatable("travellers_titles.config.notification_at_top"), BiomeConfig.INSTANCE.notificationAtTop)
-                        .setDefaultValue(false)
-                        .setTooltip(Component.translatable("travellers_titles.config.notification_at_top.tooltip"))
-                        .setSaveConsumer(value -> BiomeConfig.INSTANCE.notificationAtTop = value)
+                entries.startEnumSelector(Component.translatable("travellers_titles.config.toast_position"), NotificationPosition.class, config.toastPosition)
+                        .setDefaultValue(NotificationPosition.TOP_MIDDLE)
+                        .setEnumNameProvider(value -> Component.translatable("travellers_titles.config.toast_position." + value.name().toLowerCase(java.util.Locale.ROOT) ))
+                        .setTooltip(Component.translatable("travellers_titles.config.toast_position.tooltip"))
+                        .setSaveConsumer(value -> config.toastPosition = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startIntSlider(Component.translatable("travellers_titles.config.popup_size"), config.popupSize, 0, 300)
+                        .setDefaultValue(100)
+                        .setTooltip(Component.translatable("travellers_titles.config.popup_size.tooltip"))
+                        .setSaveConsumer(value -> config.popupSize = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startIntSlider(Component.translatable("travellers_titles.config.toast_size"), config.toastSize, 0, 300)
+                        .setDefaultValue(100)
+                        .setTooltip(Component.translatable("travellers_titles.config.toast_size.tooltip"))
+                        .setSaveConsumer(value -> config.toastSize = value)
                         .build()
         );
 
@@ -81,46 +99,6 @@ public final class BiomeConfigScreen {
                         .setDefaultValue(TemperatureUnit.CELSIUS)
                         .setEnumNameProvider(value -> Component.translatable("travellers_titles.config.temperature_unit." + value.name().toLowerCase(java.util.Locale.ROOT)))
                         .setSaveConsumer(value -> config.temperatureUnit = value)
-                        .build()
-        );
-
-        ConfigCategory titleCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.title"));
-
-        titleCategory.addEntry(
-                entries.startFloatField(Component.translatable("travellers_titles.config.title.default_size"), config.titleDefaultSize)
-                        .setDefaultValue(3.5F)
-                        .setMin(0.25F)
-                        .setMax(5.0F)
-                        .setSaveConsumer(value -> config.titleDefaultSize = value)
-                        .build()
-        );
-
-        titleCategory.addEntry(
-                entries.startFloatField(Component.translatable("travellers_titles.config.title.scale"), config.titleScale)
-                        .setDefaultValue(1.0F)
-                        .setMin(0.25F)
-                        .setMax(5.0F)
-                        .setSaveConsumer(value -> config.titleScale = value)
-                        .build()
-        );
-
-        ConfigCategory subtitleCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.subtitle"));
-
-        subtitleCategory.addEntry(
-                entries.startFloatField(Component.translatable("travellers_titles.config.subtitle.default_size"), config.subtitleDefaultSize)
-                        .setDefaultValue(1.25F)
-                        .setMin(0.25F)
-                        .setMax(5.0F)
-                        .setSaveConsumer(value -> config.subtitleDefaultSize = value)
-                        .build()
-        );
-
-        subtitleCategory.addEntry(
-                entries.startFloatField(Component.translatable("travellers_titles.config.subtitle.scale"), config.subtitleScale)
-                        .setDefaultValue(1.0F)
-                        .setMin(0.25F)
-                        .setMax(5.0F)
-                        .setSaveConsumer(value -> config.subtitleScale = value)
                         .build()
         );
 

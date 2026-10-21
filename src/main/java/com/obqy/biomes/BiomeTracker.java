@@ -110,7 +110,7 @@ public class BiomeTracker {
             BiomeParticleEffect.start(biomeKey.identifier().toString(), foliageColour);
         }
 
-        BiomeNotification.show(title, subtitle);
+        BiomeNotification.show(title, subtitle, info);
         BiomeSoundManager.playBiomeSound(client, biomeKey.identifier().toString(), info.rarity());
     }
 }

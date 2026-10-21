@@ -1,6 +1,7 @@
 package com.obqy.biomes;
 
 import com.obqy.config.BiomeConfig;
+import com.obqy.config.enums.TemperatureUnit;
 import net.minecraft.network.chat.Component;
 
 import java.util.Locale;

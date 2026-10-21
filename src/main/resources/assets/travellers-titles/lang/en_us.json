@@ -15,21 +15,25 @@
 
   "travellers_titles.config.title": "Traveller's Titles Settings",
 
-  "travellers_titles.config.category.title": "Title",
-  "travellers_titles.config.category.subtitle": "Subtitle",
   "travellers_titles.config.category.general": "General",
+  "travellers_titles.config.show_as_toast": "Show as Toast",
+  "travellers_titles.config.show_as_toast.tooltip": "Display biome notifications in a toast-style panel instead of as a centred overlay.",
+  "travellers_titles.config.toast_size": "Toast Size",
+  "travellers_titles.config.toast_size.tooltip": "Set the toast text size as a percentage of its default size. 0 hides the text; 100 is the default; 300 is three times the default.",
 
-  "travellers_titles.config.title.default_size": "Default size",
-  "travellers_titles.config.title.scale": "Custom scale",
+  "travellers_titles.config.toast_position": "Toast Position",
+  "travellers_titles.config.toast_position.tooltip": "Choose where toast notifications appear around the screen.",
+  "travellers_titles.config.toast_position.top_left": "Top Left",
+  "travellers_titles.config.toast_position.top_middle": "Top Middle",
+  "travellers_titles.config.toast_position.top_right": "Top Right",
+  "travellers_titles.config.toast_position.left": "Left",
+  "travellers_titles.config.toast_position.right": "Right",
+  "travellers_titles.config.toast_position.bottom_left": "Bottom Left",
+  "travellers_titles.config.toast_position.bottom_middle": "Bottom Middle",
+  "travellers_titles.config.toast_position.bottom_right": "Bottom Right",
 
-  "travellers_titles.config.subtitle.default_size": "Default size",
-  "travellers_titles.config.subtitle.scale": "Custom scale",
-
-  "travellers_titles.config.gui_scale": "Scale with GUI scale",
-  "travellers_titles.config.gui_scale.tooltip": "When enabled, text scales relative to GUI scale 3. When disabled, the custom scale multipliers are used.",
-
-  "travellers_titles.config.notification_at_top": "Display notification at top of screen",
-  "travellers_titles.config.notification_at_top.tooltip": "When enabled, tooltips show at the top of your screen rather than the centre.",
+  "travellers_titles.config.popup_size": "Popup Size",
+  "travellers_titles.config.popup_size.tooltip": "Set the overlay text size as a percentage of its default size. 0 hides the text; 100 is the default; 300 is three times the default.",
 
   "travellers_titles.config.rarity_as_stars": "Display rarity as stars",
   "travellers_titles.config.confirmation_delay": "Biome confirmation delay (ms)",

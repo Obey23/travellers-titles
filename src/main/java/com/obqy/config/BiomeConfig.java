@@ -1,12 +1,12 @@
-
 package com.obqy.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.obqy.TravellersTitles;
 import com.obqy.biomes.BiomeSoundEntry;
-import com.obqy.biomes.TemperatureDisplayMode;
-import com.obqy.biomes.TemperatureUnit;
+import com.obqy.config.enums.NotificationPosition;
+import com.obqy.config.enums.TemperatureDisplayMode;
+import com.obqy.config.enums.TemperatureUnit;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -20,17 +20,12 @@ public final class BiomeConfig {
     private static final Path FILE = FabricLoader.getInstance().getConfigDir().resolve("travellers-titles.json");
     public static BiomeConfig INSTANCE = new BiomeConfig();
 
-    // Title Settings
-    public float titleDefaultSize = 3.5F;
-    public float titleScale = 1.0F;
+    // Notification Settings
+    public boolean showAsToast = false;
+    public NotificationPosition toastPosition = NotificationPosition.TOP_MIDDLE;
+    public int popupSize = 100;
+    public int toastSize = 100;
 
-    // Subtitle Settings
-    public float subtitleDefaultSize = 1.25F;
-    public float subtitleScale = 1.0F;
-
-    // General Settings
-    public boolean scaleWithGuiScale = true;
-    public boolean notificationAtTop = false;
     public boolean rarityAsStars = false;
 
     // Confirmation (before showing popup)

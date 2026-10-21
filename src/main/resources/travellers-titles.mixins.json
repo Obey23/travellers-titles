@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.obqy.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "GuiItemRenderStateMixin",
+    "GuiRenderStateMixin",
+    "GuiRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

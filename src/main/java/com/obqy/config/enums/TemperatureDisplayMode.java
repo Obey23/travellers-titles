@@ -1,4 +1,4 @@
-package com.obqy.biomes;
+package com.obqy.config.enums;
 
 public enum TemperatureDisplayMode {
     MINECRAFT,

@@ -24,25 +24,26 @@ public final class BiomeConfig {
 
     public static BiomeConfig INSTANCE = new BiomeConfig();
 
+    // Title Settings
     public float titleDefaultSize = 3.5F;
     public float titleScale = 1.0F;
 
+    // Subtitle Settings
     public float subtitleDefaultSize = 1.25F;
     public float subtitleScale = 1.0F;
 
+    // General Settings
     public boolean scaleWithGuiScale = true;
     public boolean notificationAtTop = false;
     public boolean rarityAsStars = false;
-
-    public TemperatureDisplayMode temperatureDisplayMode =
-            TemperatureDisplayMode.MINECRAFT;
-
-    public TemperatureUnit temperatureUnit =
-            TemperatureUnit.CELSIUS;
-
+    // Confirmation (before showing popup)
     public int biomeConfirmationDelayMs = 1500;
     public int biomeNotificationCooldownMs = 2000;
+    // Temperature Display
+    public TemperatureDisplayMode temperatureDisplayMode = TemperatureDisplayMode.MINECRAFT;
+    public TemperatureUnit temperatureUnit = TemperatureUnit.CELSIUS;
 
+    // Biome Sounds
     public static List<BiomeSoundEntry> createDefaultBiomeSounds() {
         return new ArrayList<>(List.of(
                 new BiomeSoundEntry("minecraft:cherry_grove", "minecraft:block.amethyst_block.chime", 2.0F, 1.0F),
@@ -52,8 +53,16 @@ public final class BiomeConfig {
                 new BiomeSoundEntry("minecraft:sulfur_caves", "minecraft:block.potent_sulfur.geyser_eruption_active", 0.8F, 1.0F)
         ));
     }
-
     public List<BiomeSoundEntry> customBiomeSounds = createDefaultBiomeSounds();
+
+    // Biome Particle Settings
+    public boolean enableBiomeParticles = true;
+    public int biomeParticleDensity = 100;
+    public float biomeParticleOpacity = 0.75F;
+    public int biomeParticleMinSize = 1;
+    public int biomeParticleMaxSize = 3;
+    public int biomeParticleDurationMS = 4000;
+    public float biomeParticleAnimationSpeed = 1.0F;
 
     private BiomeConfig() {}
 

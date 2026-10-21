@@ -1,5 +1,6 @@
 package com.obqy.biomes;
 
+import com.obqy.biomes.effects.BiomeParticleEffect;
 import com.obqy.config.BiomeConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
@@ -92,17 +93,22 @@ public class BiomeTracker {
         } else rarityComponent = Component.translatable(info.rarity().getTranslationKey());
 
         Component subtitle = Component.empty()
-                .append(Component.translatable("biome_tracker.temperature"))
+                .append(Component.translatable("travellers_titles.temperature"))
                 .append(Component.literal(": "))
                 .append(temperatureComponent)
                 .append(Component.literal("  |  "))
-                .append(Component.translatable("biome_tracker.rarity"))
+                .append(Component.translatable("travellers_titles.rarity"))
                 .append(Component.literal(": "))
                 .append(rarityComponent)
                 .append(Component.literal("  |  "))
-                .append(Component.translatable("biome_tracker.size"))
+                .append(Component.translatable("travellers_titles.size"))
                 .append(Component.literal(": "))
                 .append(size);
+
+        if (BiomeConfig.INSTANCE.enableBiomeParticles) {
+            int foliageColour = biome.getFoliageColor();
+            BiomeParticleEffect.start(biomeKey.identifier().toString(), foliageColour);
+        }
 
         BiomeNotification.show(title, subtitle);
         BiomeSoundManager.playBiomeSound(client, biomeKey.identifier().toString(), info.rarity());

@@ -26,61 +26,67 @@ public final class BiomeConfigScreen {
 
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Component.translatable("biome_tracker.config.title"))
+                .setTitle(Component.translatable("travellers_titles.config.title"))
                 .setSavingRunnable(BiomeConfig::save);
 
         ConfigEntryBuilder entries = builder.entryBuilder();
 
-        ConfigCategory generalCategory = builder.getOrCreateCategory(Component.translatable("biome_tracker.config.category.general"));
+        ConfigCategory generalCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.general"));
 
         generalCategory.addEntry(
-                entries.startBooleanToggle(Component.translatable("biome_tracker.config.gui_scale"), config.scaleWithGuiScale)
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.gui_scale"), config.scaleWithGuiScale)
                         .setDefaultValue(true)
-                        .setTooltip(Component.translatable("biome_tracker.config.gui_scale.tooltip"))
+                        .setTooltip(Component.translatable("travellers_titles.config.gui_scale.tooltip"))
                         .setSaveConsumer(value -> config.scaleWithGuiScale = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startBooleanToggle(Component.translatable("biome_tracker.config.notification_at_top"), BiomeConfig.INSTANCE.notificationAtTop)
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.notification_at_top"), BiomeConfig.INSTANCE.notificationAtTop)
                         .setDefaultValue(false)
-                        .setTooltip(Component.translatable("biome_tracker.config.notification_at_top.tooltip"))
+                        .setTooltip(Component.translatable("travellers_titles.config.notification_at_top.tooltip"))
                         .setSaveConsumer(value -> BiomeConfig.INSTANCE.notificationAtTop = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startBooleanToggle(Component.translatable("biome_tracker.config.rarity_as_stars"), BiomeConfig.INSTANCE.rarityAsStars)
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.rarity_as_stars"), BiomeConfig.INSTANCE.rarityAsStars)
                         .setDefaultValue(false)
                         .setSaveConsumer(value -> BiomeConfig.INSTANCE.rarityAsStars = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startIntField(Component.translatable("biome_tracker.config.confirmation_delay"), BiomeConfig.INSTANCE.biomeConfirmationDelayMs)
+                entries.startIntSlider(
+                                Component.translatable("travellers_titles.config.confirmation_delay"),
+                                BiomeConfig.INSTANCE.biomeConfirmationDelayMs,
+                                0,
+                                10000
+                        )
                         .setDefaultValue(1500)
-                        .setMin(0)
-                        .setMax(10000)
                         .setSaveConsumer(value -> BiomeConfig.INSTANCE.biomeConfirmationDelayMs = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startIntField(Component.translatable("biome_tracker.config.notification_cooldown"), BiomeConfig.INSTANCE.biomeNotificationCooldownMs)
+                entries.startIntSlider(
+                                Component.translatable("travellers_titles.config.notification_cooldown"),
+                                BiomeConfig.INSTANCE.biomeNotificationCooldownMs,
+                                0,
+                                30000
+                        )
                         .setDefaultValue(2000)
-                        .setMin(0)
-                        .setMax(30000)
                         .setSaveConsumer(value -> BiomeConfig.INSTANCE.biomeNotificationCooldownMs = value)
                         .build()
         );
 
         generalCategory.addEntry(
-                entries.startEnumSelector(Component.translatable("biome_tracker.config.temperature_display_mode"), TemperatureDisplayMode.class, config.temperatureDisplayMode)
+                entries.startEnumSelector(Component.translatable("travellers_titles.config.temperature_display_mode"), TemperatureDisplayMode.class, config.temperatureDisplayMode)
                         .setDefaultValue(TemperatureDisplayMode.MINECRAFT)
                         .setEnumNameProvider(value -> switch (value) {
-                            case TemperatureDisplayMode.MINECRAFT -> Component.translatable("biome_tracker.config.temperature_display_mode.minecraft");
-                            case TemperatureDisplayMode.REAL_WORLD -> Component.translatable("biome_tracker.config.temperature_display_mode.real_world");
-                            case TemperatureDisplayMode.FIRES -> Component.translatable("biome_tracker.config.temperature_display_mode.fires");
+                            case TemperatureDisplayMode.MINECRAFT -> Component.translatable("travellers_titles.config.temperature_display_mode.minecraft");
+                            case TemperatureDisplayMode.REAL_WORLD -> Component.translatable("travellers_titles.config.temperature_display_mode.real_world");
+                            case TemperatureDisplayMode.FIRES -> Component.translatable("travellers_titles.config.temperature_display_mode.fires");
                             default -> throw new IllegalStateException("Unexpected value: " + value);
                         })
                         .setSaveConsumer(value -> config.temperatureDisplayMode = value)
@@ -88,21 +94,21 @@ public final class BiomeConfigScreen {
         );
 
         generalCategory.addEntry(
-                entries.startEnumSelector(Component.translatable("biome_tracker.config.temperature_unit"), TemperatureUnit.class, config.temperatureUnit)
+                entries.startEnumSelector(Component.translatable("travellers_titles.config.temperature_unit"), TemperatureUnit.class, config.temperatureUnit)
                         .setDefaultValue(TemperatureUnit.CELSIUS)
                         .setEnumNameProvider(value -> switch (value) {
-                            case TemperatureUnit.CELSIUS -> Component.translatable("biome_tracker.config.temperature_unit.celsius");
-                            case TemperatureUnit.FAHRENHEIT -> Component.translatable("biome_tracker.config.temperature_unit.fahrenheit");
+                            case TemperatureUnit.CELSIUS -> Component.translatable("travellers_titles.config.temperature_unit.celsius");
+                            case TemperatureUnit.FAHRENHEIT -> Component.translatable("travellers_titles.config.temperature_unit.fahrenheit");
                             default -> throw new IllegalStateException("Unexpected value: " + value);
                         })
                         .setSaveConsumer(value -> config.temperatureUnit = value)
                         .build()
         );
 
-        ConfigCategory titleCategory = builder.getOrCreateCategory(Component.translatable("biome_tracker.config.category.title"));
+        ConfigCategory titleCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.title"));
 
         titleCategory.addEntry(
-                entries.startFloatField(Component.translatable("biome_tracker.config.title.default_size"), config.titleDefaultSize)
+                entries.startFloatField(Component.translatable("travellers_titles.config.title.default_size"), config.titleDefaultSize)
                         .setDefaultValue(3.5F)
                         .setMin(0.25F)
                         .setMax(5.0F)
@@ -111,7 +117,7 @@ public final class BiomeConfigScreen {
         );
 
         titleCategory.addEntry(
-                entries.startFloatField(Component.translatable("biome_tracker.config.title.scale"), config.titleScale)
+                entries.startFloatField(Component.translatable("travellers_titles.config.title.scale"), config.titleScale)
                         .setDefaultValue(1.0F)
                         .setMin(0.25F)
                         .setMax(5.0F)
@@ -119,10 +125,10 @@ public final class BiomeConfigScreen {
                         .build()
         );
 
-        ConfigCategory subtitleCategory = builder.getOrCreateCategory(Component.translatable("biome_tracker.config.category.subtitle"));
+        ConfigCategory subtitleCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.subtitle"));
 
         subtitleCategory.addEntry(
-                entries.startFloatField(Component.translatable("biome_tracker.config.subtitle.default_size"), config.subtitleDefaultSize)
+                entries.startFloatField(Component.translatable("travellers_titles.config.subtitle.default_size"), config.subtitleDefaultSize)
                         .setDefaultValue(1.25F)
                         .setMin(0.25F)
                         .setMax(5.0F)
@@ -131,7 +137,7 @@ public final class BiomeConfigScreen {
         );
 
         subtitleCategory.addEntry(
-                entries.startFloatField(Component.translatable("biome_tracker.config.subtitle.scale"), config.subtitleScale)
+                entries.startFloatField(Component.translatable("travellers_titles.config.subtitle.scale"), config.subtitleScale)
                         .setDefaultValue(1.0F)
                         .setMin(0.25F)
                         .setMax(5.0F)
@@ -139,11 +145,92 @@ public final class BiomeConfigScreen {
                         .build()
         );
 
-        ConfigCategory soundCategory = builder.getOrCreateCategory(Component.translatable("biome_tracker.config.category.sounds"));
+        ConfigCategory particleCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.particles"));
+
+        particleCategory.addEntry(
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.particles.enable"), config.enableBiomeParticles)
+                        .setDefaultValue(true)
+                        .setSaveConsumer(value -> config.enableBiomeParticles = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startIntSlider(
+                                Component.translatable("travellers_titles.config.particles.density"),
+                                config.biomeParticleDensity,
+                                0,
+                                1000
+                        )
+                        .setDefaultValue(100)
+                        .setSaveConsumer(value -> config.biomeParticleDensity = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startFloatField(
+                                Component.translatable("travellers_titles.config.particles.opacity"),
+                                config.biomeParticleOpacity
+                        )
+                        .setDefaultValue(0.75F)
+                        .setMin(0.0F)
+                        .setMax(1.0F)
+                        .setSaveConsumer(value -> config.biomeParticleOpacity = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startIntSlider(
+                                Component.translatable("travellers_titles.config.particles.min_size"),
+                                config.biomeParticleMinSize,
+                                1,
+                                10
+                        )
+                        .setDefaultValue(1)
+                        .setSaveConsumer(value -> config.biomeParticleMinSize = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startIntSlider(
+                                Component.translatable("travellers_titles.config.particles.max_size"),
+                                config.biomeParticleMaxSize,
+                                1,
+                                10
+                        )
+                        .setDefaultValue(3)
+                        .setSaveConsumer(value -> config.biomeParticleMaxSize = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startIntSlider(
+                                Component.translatable("travellers_titles.config.particles.duration_ms"),
+                                config.biomeParticleDurationMS,
+                                500,
+                                15000
+                        )
+                        .setDefaultValue(4000)
+                        .setSaveConsumer(value -> config.biomeParticleDurationMS = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startFloatField(
+                                Component.translatable("travellers_titles.config.particles.animation_speed"),
+                                config.biomeParticleAnimationSpeed
+                        )
+                        .setDefaultValue(1.0F)
+                        .setMin(0.1F)
+                        .setMax(3.0F)
+                        .setSaveConsumer(value -> config.biomeParticleAnimationSpeed = value)
+                        .build()
+        );
+
+        ConfigCategory soundCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.sounds"));
 
         soundCategory.addEntry(
                 new NestedListListEntry<BiomeSoundEntry, MultiElementListEntry<BiomeSoundEntry>>(
-                        Component.translatable("biome_tracker.config.sounds.entries"),
+                        Component.translatable("travellers_titles.config.sounds.entries"),
                         new ArrayList<>(config.customBiomeSounds),
                         true,
                         Optional::empty,
@@ -165,19 +252,19 @@ public final class BiomeConfigScreen {
                                     value,
                                     List.of(
                                             entries.startStrField(Component.translatable(
-                                                                    "biome_tracker.config.sounds.biome_id"
+                                                                    "travellers_titles.config.sounds.biome_id"
                                                             ), value.biomeId)
                                                     .setSaveConsumer(v -> value.biomeId = v.trim())
                                                     .build(),
 
                                             entries.startStrField(Component.translatable(
-                                                                    "biome_tracker.config.sounds.sound_id"
+                                                                    "travellers_titles.config.sounds.sound_id"
                                                             ), value.soundId)
                                                     .setSaveConsumer(v -> value.soundId = v.trim())
                                                     .build(),
 
                                             entries.startFloatField(Component.translatable(
-                                                                    "biome_tracker.config.sounds.volume"
+                                                                    "travellers_titles.config.sounds.volume"
                                                             ), value.volume)
                                                     .setMin(0.0F)
                                                     .setMax(2.0F)
@@ -185,7 +272,7 @@ public final class BiomeConfigScreen {
                                                     .build(),
 
                                             entries.startFloatField(Component.translatable(
-                                                                    "biome_tracker.config.sounds.pitch"
+                                                                    "travellers_titles.config.sounds.pitch"
                                                             ), value.pitch)
                                                     .setMin(0.5F)
                                                     .setMax(2.0F)

@@ -8,10 +8,10 @@ import net.minecraft.world.level.biome.Biome;
 
 public record BiomeInfo(BiomeRarity rarity, BiomeSize size) {
     public enum BiomeRarity {
-        COMMON("biome_tracker.rarity.common"),
-        UNCOMMON("biome_tracker.rarity.uncommon"),
-        RARE("biome_tracker.rarity.rare"),
-        UNKNOWN("biome_tracker.rarity.unknown");
+        COMMON("travellers_titles.rarity.common"),
+        UNCOMMON("travellers_titles.rarity.uncommon"),
+        RARE("travellers_titles.rarity.rare"),
+        UNKNOWN("travellers_titles.rarity.unknown");
 
         private final String translationKey;
 
@@ -25,10 +25,10 @@ public record BiomeInfo(BiomeRarity rarity, BiomeSize size) {
     }
 
     public enum BiomeSize {
-        SMALL("biome_tracker.size.small"),
-        NORMAL("biome_tracker.size.normal"),
-        LARGE("biome_tracker.size.large"),
-        UNKNOWN("biome_tracker.size.unknown");
+        SMALL("travellers_titles.size.small"),
+        NORMAL("travellers_titles.size.normal"),
+        LARGE("travellers_titles.size.large"),
+        UNKNOWN("travellers_titles.size.unknown");
 
         private final String translationKey;
 

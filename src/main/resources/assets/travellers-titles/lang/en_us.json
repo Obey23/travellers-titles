@@ -32,7 +32,6 @@
   "travellers_titles.config.notification_at_top.tooltip": "When enabled, tooltips show at the top of your screen rather than the centre.",
 
   "travellers_titles.config.rarity_as_stars": "Display rarity as stars",
-
   "travellers_titles.config.confirmation_delay": "Biome confirmation delay (ms)",
   "travellers_titles.config.notification_cooldown": "Notification cooldown (ms)",
 
@@ -52,6 +51,7 @@
   "travellers_titles.config.particles.max_size": "Maximum Particle Size",
   "travellers_titles.config.particles.duration_ms": "Effect Duration (ms)",
   "travellers_titles.config.particles.animation_speed": "Animation Speed",
+  "travellers_titles.config.particles.firefly_speed": "Firefly Speed",
 
   "travellers_titles.config.category.sounds": "Custom Biome Sounds",
   "travellers_titles.config.sounds.entries": "Biome sound overrides",

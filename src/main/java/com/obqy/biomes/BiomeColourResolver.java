@@ -1,4 +1,3 @@
-
 package com.obqy.biomes;
 
 import net.minecraft.core.Holder;

@@ -9,8 +9,32 @@ public record BiomeEffectInfo(
         ParticleTextureSet popTextureSet,
         boolean rises,
         long popFrameDurationMs,
-        float densityMultiplier
+        float densityMultiplier,
+        MovementType movementType,
+        boolean pulsingGlow
 ) {
+    public enum MovementType {
+        VERTICAL,
+        WANDERING
+    }
+
+    public BiomeEffectInfo(
+            List<ParticleTextureSet> particleTextureSets,
+            ParticleTextureSet popTextureSet,
+            boolean rises,
+            long popFrameDurationMs,
+            float densityMultiplier
+    ) {
+        this(
+                particleTextureSets,
+                popTextureSet,
+                rises,
+                popFrameDurationMs,
+                densityMultiplier,
+                MovementType.VERTICAL,
+                false
+        );
+    }
 
     private static List<String> indexed(String prefix, int first, int last) {
         List<String> textures = new ArrayList<>();
@@ -161,6 +185,28 @@ public record BiomeEffectInfo(
                     0.5F
             );
 
+    // Fireflies
+    public static final BiomeEffectInfo FIREFLIES =
+            new BiomeEffectInfo(
+                    List.of(minecraftParticle(List.of("firefly.png"), 100, false)),
+                    null,
+                    false,
+                    200L,
+                    0.5F,
+                    MovementType.WANDERING,
+                    true
+            );
+
+    // Spore Blossom Textures
+    public static final BiomeEffectInfo LUSH =
+            new BiomeEffectInfo(
+                    List.of(new ParticleTextureSet("travellers-titles", "textures/biome_particles/lush/", indexed("spore_blossom_", 0, 7), 100, false)),
+                    null,
+                    false,
+                    150L,
+                    0.7F
+            );
+
     private static final Map<String, BiomeEffectInfo> BIOMES =
             Map.ofEntries(
                     // Forest biomes
@@ -173,16 +219,18 @@ public record BiomeEffectInfo(
                     Map.entry("minecraft:old_growth_spruce_taiga", LEAVES),
                     Map.entry("minecraft:jungle", LEAVES),
                     Map.entry("minecraft:sparse_jungle", LEAVES),
-                    Map.entry("minecraft:swamp", LEAVES),
-                    Map.entry("minecraft:mangrove_swamp", LEAVES),
                     Map.entry("minecraft:savanna", LEAVES),
                     Map.entry("minecraft:savanna_plateau", LEAVES),
                     Map.entry("minecraft:windswept_savanna", LEAVES),
                     Map.entry("minecraft:wooded_badlands", LEAVES),
-                    Map.entry("minecraft:birch_forest", FLOWERS_AND_LEAVES),
-                    Map.entry("minecraft:old_growth_birch_forest", FLOWERS_AND_LEAVES),
+
+                    // Swamps
+                    Map.entry("minecraft:swamp", FIREFLIES),
+                    Map.entry("minecraft:mangrove_swamp", FIREFLIES),
 
                     // Special forests
+                    Map.entry("minecraft:birch_forest", FLOWERS_AND_LEAVES),
+                    Map.entry("minecraft:old_growth_birch_forest", FLOWERS_AND_LEAVES),
                     Map.entry("minecraft:dappled_forest", AUTUMN_LEAVES),
                     Map.entry("minecraft:cherry_grove", CHERRY_PETALS),
                     Map.entry("minecraft:pale_garden", PALE_LEAVES),
@@ -190,6 +238,7 @@ public record BiomeEffectInfo(
                     // Misc overworld
                     Map.entry("minecraft:meadow", FLOWERS),
                     Map.entry("minecraft:sunflower_plains", FLOWERS),
+                    Map.entry("minecraft:lush_caves", LUSH),
 
                     // Water biomes
                     Map.entry("minecraft:ocean", BUBBLES),

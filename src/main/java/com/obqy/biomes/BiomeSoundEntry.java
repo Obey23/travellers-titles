@@ -1,4 +1,3 @@
-
 package com.obqy.biomes;
 
 public class BiomeSoundEntry {

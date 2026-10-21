@@ -1,4 +1,3 @@
-
 package com.obqy.biomes.effects;
 
 import com.obqy.TravellersTitles;
@@ -42,7 +41,11 @@ public final class BiomeParticleEffect {
             float swaySpeed,
             float rotationSpeed,
             float rotationOffset,
-            long animationStartTime
+            long animationStartTime,
+            long movementSeed,
+            float glowPhase,
+            float glowSpeed,
+            float movementSpeed
     ) {}
 
     private record ParticleTexture(
@@ -178,7 +181,11 @@ public final class BiomeParticleEffect {
                     randomBetween(0.5F, 2.0F),
                     randomBetween(-90.0F, 90.0F),
                     RANDOM.nextFloat() * 360.0F,
-                    popping ? System.currentTimeMillis() : 0L
+                    popping ? System.currentTimeMillis() : 0L,
+                    RANDOM.nextLong(),
+                    RANDOM.nextFloat() * (float) (Math.PI * 2.0),
+                    randomBetween(0.4F, 0.9F),
+                    randomBetween(0.8F, 1.2F)
             ));
         }
     }
@@ -195,6 +202,31 @@ public final class BiomeParticleEffect {
         int blue = Math.min(255, Math.round((colour & 0xFF) * brightness));
 
         return (red << 16) | (green << 8) | blue;
+    }
+
+    private static float wanderTarget(Particle particle, int segment, boolean vertical) {
+        if (segment == 0) return vertical ? particle.y() : particle.x();
+        Random random = new Random(particle.movementSeed() + segment * 0x9E3779B97F4A7C15L);
+        float x = random.nextFloat();
+        float y = random.nextFloat();
+        return vertical ? y : x;
+    }
+
+    private static float wanderPosition(Particle particle, float elapsedSeconds, boolean vertical) {
+        float speed = (float) Math.clamp(config.wanderingParticlesSpeed, 1, 200) / 100;
+
+        // Slightly random speeds
+        float segmentDuration = 4.0F / (speed * particle.movementSpeed());
+
+        int segment = (int) (elapsedSeconds / segmentDuration);
+        float progress = (elapsedSeconds % segmentDuration) / segmentDuration;
+
+        progress = progress * progress * (3.0F - 2.0F * progress);
+
+        float start = wanderTarget(particle, segment, vertical);
+        float end = wanderTarget(particle, segment + 1, vertical);
+
+        return start + (end - start) * progress;
     }
 
     private static void render(GuiGraphicsExtractor graphics) {
@@ -218,16 +250,26 @@ public final class BiomeParticleEffect {
         float alpha = Math.clamp(config.biomeParticleOpacity * fadeIn * fadeOut, 0.0F, 1.0F);
 
         for (Particle particle : PARTICLES) {
-            float distance = particle.fallSpeed() * elapsedSeconds;
+            float xPosition;
             float yPosition;
 
-            if (currentEffect.rises()) yPosition = Math.floorMod(Math.round(particle.y() * screenHeight - distance), screenHeight + particle.size());
-            else yPosition = (particle.y() * screenHeight + distance) % (screenHeight + particle.size());
-
-            float sway = (float) Math.sin(elapsedSeconds * particle.swaySpeed() + particle.rotationOffset()) * particle.swayAmount();
-            float xPosition = particle.x() * screenWidth + sway;
+            if (currentEffect.movementType() == BiomeEffectInfo.MovementType.WANDERING) {
+                xPosition = wanderPosition(particle, elapsedSeconds, false) * screenWidth;
+                yPosition = wanderPosition(particle, elapsedSeconds, true) * screenHeight;
+            } else {
+                float distance = particle.fallSpeed() * elapsedSeconds;
+                if (currentEffect.rises()) yPosition = Math.floorMod(Math.round(particle.y() * screenHeight - distance), screenHeight + particle.size());
+                else yPosition = (particle.y() * screenHeight + distance) % (screenHeight + particle.size());
+                float sway = (float) Math.sin(elapsedSeconds * particle.swaySpeed() + particle.rotationOffset()) * particle.swayAmount();
+                xPosition = particle.x() * screenWidth + sway;
+            }
 
             float particleAlpha = alpha * particle.opacity();
+            if (currentEffect.pulsingGlow()) {
+                float pulse = 0.35F + 0.65F * (0.5F + 0.5F * (float) Math.sin(elapsedSeconds * particle.glowSpeed() + particle.glowPhase()));
+                particleAlpha *= pulse;
+            }
+
             int alphaByte = Math.round(particleAlpha * 255.0F);
             int tint = (alphaByte << 24) | particle.tint();
 
@@ -239,9 +281,7 @@ public final class BiomeParticleEffect {
                 int frame = (int) (animationElapsed / Math.max(1L, currentEffect.popFrameDurationMs()));
                 if (frame < 0 || frame >= particle.textures().size()) continue;
                 texture = particle.textures().get(frame);
-            } else {
-                texture = particle.textures().getFirst();
-            }
+            } else texture = particle.textures().getFirst();
 
             int maxDimension = Math.max(texture.width(), texture.height());
             float scale = particle.size() / (float) maxDimension;

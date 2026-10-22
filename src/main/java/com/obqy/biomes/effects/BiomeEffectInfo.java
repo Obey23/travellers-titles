@@ -15,7 +15,8 @@ public record BiomeEffectInfo(
 ) {
     public enum MovementType {
         VERTICAL,
-        WANDERING
+        WANDERING,
+        RISING_WOBBLE
     }
 
     public BiomeEffectInfo(
@@ -152,7 +153,9 @@ public record BiomeEffectInfo(
                     minecraftParticle(indexed("bubble_pop_", 0, 4), 50, false),
                     true,
                     100L,
-                    0.75F
+                    0.75F,
+                    MovementType.RISING_WOBBLE,
+                    false
             );
 
     // Deep Dark

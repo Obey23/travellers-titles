@@ -56,6 +56,10 @@
   "travellers_titles.config.particles.duration_ms": "Effect Duration (ms)",
   "travellers_titles.config.particles.animation_speed": "Animation Speed",
   "travellers_titles.config.particles.firefly_speed": "Firefly Speed",
+  "travellers_titles.config.particles.transitions": "Biome Particle Transitions",
+  "travellers_titles.config.particles.transitions.tooltip": "Crossfade between particle effects when entering a new biome.",
+  "travellers_titles.config.particles.transition_duration": "Transition Duration (ms)",
+  "travellers_titles.config.particles.transition_duration.tooltip": "How long biome particle effects take to crossfade, in milliseconds.",
 
   "travellers_titles.config.category.sounds": "Custom Biome Sounds",
   "travellers_titles.config.sounds.entries": "Biome sound overrides",

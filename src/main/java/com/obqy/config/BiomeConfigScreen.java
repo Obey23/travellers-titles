@@ -164,6 +164,22 @@ public final class BiomeConfigScreen {
                         .build()
         );
 
+        particleCategory.addEntry(
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.particles.transitions"), config.enableBiomeParticleTransitions)
+                        .setDefaultValue(true)
+                        .setTooltip(Component.translatable("travellers_titles.config.particles.transitions.tooltip"))
+                        .setSaveConsumer(value -> config.enableBiomeParticleTransitions = value)
+                        .build()
+        );
+
+        particleCategory.addEntry(
+                entries.startIntSlider(Component.translatable("travellers_titles.config.particles.transition_duration"), config.biomeParticleTransitionDurationMS, 100, 3000)
+                        .setDefaultValue(500)
+                        .setTooltip(Component.translatable("travellers_titles.config.particles.transition_duration.tooltip"))
+                        .setSaveConsumer(value -> config.biomeParticleTransitionDurationMS = value)
+                        .build()
+        );
+
         ConfigCategory soundCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.sounds"));
 
         soundCategory.addEntry(

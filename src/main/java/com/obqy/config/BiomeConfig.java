@@ -58,6 +58,8 @@ public final class BiomeConfig {
     public int biomeParticleDurationMS = 4000;
     public float biomeParticleAnimationSpeed = 1.0F;
     public int wanderingParticlesSpeed = 100;
+    public boolean enableBiomeParticleTransitions = true;
+    public int biomeParticleTransitionDurationMS = 500;
 
     private BiomeConfig() {}
 

@@ -29,6 +29,12 @@ public final class BiomeParticleEffect {
     private static BiomeEffectInfo currentEffect;
     private static int currentFoliageColour = 0xFFFFFF;
 
+    private static final List<Particle> OUTGOING_PARTICLES = new ArrayList<>();
+    private static BiomeEffectInfo outgoingEffect;
+    private static long outgoingStartTime;
+    private static long transitionStartTime;
+    private static final int NO_EFFECT_FADE_DURATION_MS = 1500;
+
     private record Particle(
             List<ParticleTexture> textures,
             float x,
@@ -67,13 +73,40 @@ public final class BiomeParticleEffect {
         BiomeEffectInfo effect = BiomeEffectInfo.get(biomeId);
 
         if (effect == null) {
-            stop();
+            if (active && currentEffect != null && !PARTICLES.isEmpty()) {
+                OUTGOING_PARTICLES.clear();
+                OUTGOING_PARTICLES.addAll(PARTICLES);
+
+                outgoingEffect = currentEffect;
+                outgoingStartTime = startTime;
+                transitionStartTime = System.currentTimeMillis();
+
+                currentEffect = null;
+                PARTICLES.clear();
+                active = false;
+            } else {
+                stop();
+            }
             return;
+        }
+
+        long now = System.currentTimeMillis();
+
+        if (config.enableBiomeParticleTransitions && active && currentEffect != null) {
+            OUTGOING_PARTICLES.clear();
+            OUTGOING_PARTICLES.addAll(PARTICLES);
+
+            outgoingEffect = currentEffect;
+            outgoingStartTime = startTime;
+            transitionStartTime = now;
+        } else {
+            OUTGOING_PARTICLES.clear();
+            outgoingEffect = null;
         }
 
         currentEffect = effect;
         currentFoliageColour = foliageColour;
-        startTime = System.currentTimeMillis();
+        startTime = now;
         active = true;
 
         generateParticles();
@@ -83,6 +116,8 @@ public final class BiomeParticleEffect {
         active = false;
         currentEffect = null;
         PARTICLES.clear();
+        outgoingEffect = null;
+        OUTGOING_PARTICLES.clear();
     }
 
     private static ParticleTexture loadTexture(Identifier id) {
@@ -230,42 +265,81 @@ public final class BiomeParticleEffect {
     }
 
     private static void render(GuiGraphicsExtractor graphics) {
-        if (!active || currentEffect == null) return;
+        if (!config.enableBiomeParticles || (!active && outgoingEffect == null)) return;
 
-        long elapsed = System.currentTimeMillis() - startTime;
-
-        if (elapsed >= config.biomeParticleDurationMS) {
+        long now = System.currentTimeMillis();
+        if (now - startTime >= config.biomeParticleDurationMS) {
             stop();
             return;
         }
 
+        if (currentEffect == null && outgoingEffect != null) {
+            float progress = Math.clamp((now - transitionStartTime) / (float) NO_EFFECT_FADE_DURATION_MS, 0.0F, 1.0F);
+            if (progress >= 1.0F) stop();
+            else renderParticles(graphics, outgoingEffect, OUTGOING_PARTICLES, outgoingStartTime, 1.0F - progress, true);
+            return;
+        }
+
+        if (!config.enableBiomeParticleTransitions) {
+            outgoingEffect = null;
+            OUTGOING_PARTICLES.clear();
+        }
+
+        float progress = outgoingEffect == null ? 1.0F : Math.clamp((now - transitionStartTime) / (float) Math.max(1, config.biomeParticleTransitionDurationMS), 0.0F, 1.0F);
+
+        if (outgoingEffect != null) {
+            if (progress >= 1.0F) {
+                outgoingEffect = null;
+                OUTGOING_PARTICLES.clear();
+            } else {
+                renderParticles(
+                        graphics,
+                        outgoingEffect,
+                        OUTGOING_PARTICLES,
+                        outgoingStartTime,
+                        1.0F - progress,
+                        true
+                );
+            }
+        }
+        renderParticles(graphics, currentEffect, PARTICLES, startTime, progress, false);
+    }
+
+    private static void renderParticles(GuiGraphicsExtractor graphics, BiomeEffectInfo effect, List<Particle> particles, long layerStartTime, float layerOpacity, boolean transitioningOut) {
         int screenWidth = graphics.guiWidth();
         int screenHeight = graphics.guiHeight();
 
+        long elapsed = System.currentTimeMillis() - layerStartTime;
         float elapsedSeconds = elapsed / 1000.0F * config.biomeParticleAnimationSpeed;
 
         float fadeIn = Math.min(1.0F, elapsed / 300.0F);
-        float fadeOut = Math.min(1.0F, (config.biomeParticleDurationMS - elapsed) / 500.0F);
+        float fadeOut = transitioningOut ? 1.0F : Math.min(1.0F, (config.biomeParticleDurationMS - elapsed) / 500.0F);
 
-        float alpha = Math.clamp(config.biomeParticleOpacity * fadeIn * fadeOut, 0.0F, 1.0F);
+        float alpha = Math.clamp(config.biomeParticleOpacity * fadeIn * fadeOut * layerOpacity, 0.0F, 1.0F);
 
-        for (Particle particle : PARTICLES) {
+        for (Particle particle : particles) {
             float xPosition;
             float yPosition;
 
-            if (currentEffect.movementType() == BiomeEffectInfo.MovementType.WANDERING) {
+            if (effect.movementType() == BiomeEffectInfo.MovementType.WANDERING) {
                 xPosition = wanderPosition(particle, elapsedSeconds, false) * screenWidth;
                 yPosition = wanderPosition(particle, elapsedSeconds, true) * screenHeight;
             } else {
                 float distance = particle.fallSpeed() * elapsedSeconds;
-                if (currentEffect.rises()) yPosition = Math.floorMod(Math.round(particle.y() * screenHeight - distance), screenHeight + particle.size());
+                if (effect.rises()) yPosition = Math.floorMod(Math.round(particle.y() * screenHeight - distance), screenHeight + particle.size());
                 else yPosition = (particle.y() * screenHeight + distance) % (screenHeight + particle.size());
-                float sway = (float) Math.sin(elapsedSeconds * particle.swaySpeed() + particle.rotationOffset()) * particle.swayAmount();
-                xPosition = particle.x() * screenWidth + sway;
+
+                if (effect.movementType() == BiomeEffectInfo.MovementType.RISING_WOBBLE) {
+                    float wobble = (float) Math.sin(elapsedSeconds * particle.swaySpeed() * 3.0F + particle.movementSeed() % 1000) * 3.0F;
+                    xPosition = particle.x() * screenWidth + wobble;
+                } else {
+                    float sway = (float) Math.sin(elapsedSeconds * particle.swaySpeed() + particle.rotationOffset()) * particle.swayAmount();
+                    xPosition = particle.x() * screenWidth + sway;
+                }
             }
 
             float particleAlpha = alpha * particle.opacity();
-            if (currentEffect.pulsingGlow()) {
+            if (effect.pulsingGlow()) {
                 float pulse = 0.35F + 0.65F * (0.5F + 0.5F * (float) Math.sin(elapsedSeconds * particle.glowSpeed() + particle.glowPhase()));
                 particleAlpha *= pulse;
             }
@@ -278,7 +352,7 @@ public final class BiomeParticleEffect {
             ParticleTexture texture;
             if (particle.textures().size() > 1) {
                 long animationElapsed = System.currentTimeMillis() - particle.animationStartTime();
-                int frame = (int) (animationElapsed / Math.max(1L, currentEffect.popFrameDurationMs()));
+                int frame = (int) (animationElapsed / Math.max(1L, effect.popFrameDurationMs()));
                 if (frame < 0 || frame >= particle.textures().size()) continue;
                 texture = particle.textures().get(frame);
             } else texture = particle.textures().getFirst();

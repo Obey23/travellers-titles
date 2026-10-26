@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 
@@ -14,6 +15,7 @@ public class BiomeTracker {
     private static ResourceKey<Biome> pendingBiome = null;
     private static long pendingSince = 0L;
     private static long lastNotificationTime = 0L;
+    private static final BiomeConfig config = BiomeConfig.INSTANCE;
 
     public static void register() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -32,8 +34,6 @@ public class BiomeTracker {
             if (biomeKey == null) return;
 
             long now = System.currentTimeMillis();
-
-            BiomeConfig config = BiomeConfig.INSTANCE;
 
             long confirmationDelay = Math.max(0, config.biomeConfirmationDelayMs);
             long cooldown = Math.max(0, config.biomeNotificationCooldownMs);
@@ -81,7 +81,7 @@ public class BiomeTracker {
         Component temperatureComponent = BiomeTemperatureDisplay.format(biome.getBaseTemperature());
 
         Component rarityComponent;
-        if (BiomeConfig.INSTANCE.rarityAsStars) {
+        if (config.rarityAsStars) {
             rarityComponent = switch (info.rarity()) {
                 case COMMON -> Component.literal("★").withColor(0xf5ecd0);
                 case UNCOMMON -> Component.literal("★★").withColor(0xeddfb7);
@@ -92,25 +92,33 @@ public class BiomeTracker {
             };
         } else rarityComponent = Component.translatable(info.rarity().getTranslationKey());
 
-        Component subtitle = Component.empty()
-                .append(Component.translatable("travellers_titles.temperature"))
-                .append(Component.literal(": "))
-                .append(temperatureComponent)
-                .append(Component.literal("  |  "))
-                .append(Component.translatable("travellers_titles.rarity"))
-                .append(Component.literal(": "))
-                .append(rarityComponent)
-                .append(Component.literal("  |  "))
-                .append(Component.translatable("travellers_titles.size"))
-                .append(Component.literal(": "))
-                .append(size);
+        MutableComponent subtitle = Component.empty();
+        if (config.showTemperature) {
+            subtitle.append(Component.translatable("travellers_titles.temperature"))
+                    .append(Component.literal(": "))
+                    .append(temperatureComponent);
+        }
 
-        if (BiomeConfig.INSTANCE.enableBiomeParticles) {
+        if (config.showRarity) {
+            if (!subtitle.getString().isEmpty()) subtitle.append(Component.literal("  |  "));
+            subtitle.append(Component.translatable("travellers_titles.rarity"))
+                    .append(Component.literal(": "))
+                    .append(rarityComponent);
+        }
+
+        if (config.showSize) {
+            if (!subtitle.getString().isEmpty()) subtitle.append(Component.literal("  |  "));
+            subtitle.append(Component.translatable("travellers_titles.size"))
+                    .append(Component.literal(": "))
+                    .append(size);
+        }
+
+        if (config.enableBiomeParticles) {
             int foliageColour = biome.getFoliageColor();
             BiomeParticleEffect.start(biomeKey.identifier().toString(), foliageColour);
         }
 
-        BiomeNotification.show(title, subtitle, info);
-        BiomeSoundManager.playBiomeSound(client, biomeKey.identifier().toString(), info.rarity());
+        BiomeNotification.show(title, subtitle, info, biomeKey.identifier());
+        if (config.enableBiomeSounds) BiomeSoundManager.playBiomeSound(client, biomeKey.identifier().toString(), info.rarity());
     }
 }

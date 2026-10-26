@@ -2,6 +2,7 @@ package com.obqy.biomes;
 
 import com.obqy.config.BiomeConfig;
 import com.obqy.config.enums.NotificationPosition;
+import com.obqy.biomes.structures.StructureInfo;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.DeltaTracker;
@@ -15,12 +16,18 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import java.util.List;
 
 public final class BiomeNotification {
     private static boolean renderingNotificationIcon;
     private static Component title = Component.empty();
     private static Component subtitle = Component.empty();
     private static Item icon = Items.GRASS_BLOCK;
+    private static List<StructureInfo> structureIcons = List.of();
+    private static final int POPUP_STRUCTURE_ICON_SIZE = 16;
+    private static final int TOAST_STRUCTURE_ICON_SIZE = 8;
+    private static final int STRUCTURE_ICON_GAP = 2;
+    private static final int TOAST_STRUCTURE_LABEL_GAP = 3;
     private static long expiresAt = 0L;
 
     private static final long DISPLAY_TIME_MS = 5000L;
@@ -29,7 +36,6 @@ public final class BiomeNotification {
 
     private static final int MARGIN = 10;
     private static final int TOAST_WIDTH = 160;
-    private static final int TOAST_HEIGHT = 32;
     private static final int TOAST_ICON_SIZE = 20;
     private static final int TOAST_TEXT_GAP = 6;
     private static final int SUBTITLE_GAP = 4;
@@ -45,10 +51,11 @@ public final class BiomeNotification {
         return renderingNotificationIcon;
     }
 
-    public static void show(Component newTitle, Component newSubtitle, BiomeInfo info) {
+    public static void show(Component newTitle, Component newSubtitle, BiomeInfo info, Identifier biomeId) {
         title = newTitle;
         subtitle = newSubtitle;
         icon = info.icon();
+        structureIcons = StructureInfo.getForBiome(biomeId);
         expiresAt = System.currentTimeMillis() + DISPLAY_TIME_MS;
     }
 
@@ -70,17 +77,27 @@ public final class BiomeNotification {
         float subtitleScale = (config.showAsToast ? 0.5F : 1.25F) * sizeMultiplier;
 
         int titleHeight = Math.round(9 * titleScale);
+        int subtitleHeight = Math.round(9 * subtitleScale);
         int contentHeight = titleHeight;
-        if (!subtitle.getString().isEmpty()) contentHeight += Math.round(9 * subtitleScale) + SUBTITLE_GAP;
+
+        if (config.showAsToast) {
+            if (!subtitle.getString().isEmpty()) contentHeight = Math.round(11 * sizeMultiplier) + subtitleHeight;
+            if (!structureIcons.isEmpty() && config.showStructures) {
+                if (!subtitle.getString().isEmpty()) contentHeight += Math.round(SUBTITLE_GAP * sizeMultiplier);
+                contentHeight += Math.round(TOAST_STRUCTURE_ICON_SIZE * sizeMultiplier);
+            }
+        } else {
+            if (!subtitle.getString().isEmpty()) contentHeight += subtitleHeight + SUBTITLE_GAP;
+            if (!structureIcons.isEmpty() && config.showStructures) {
+                contentHeight += SUBTITLE_GAP + POPUP_STRUCTURE_ICON_SIZE;
+                if (!subtitle.getString().isEmpty()) contentHeight += 4;
+            }
+        }
 
         int screenWidth = graphics.guiWidth();
         int screenHeight = graphics.guiHeight();
         NotificationPosition position = config.showAsToast ? config.toastPosition : NotificationPosition.TOP_MIDDLE;
         TextAlignment alignment = getAlignment(position);
-
-        int titleWidth = Math.round(client.font.width(title) * titleScale);
-        int subtitleWidth = subtitle.getString().isEmpty() ? 0 : Math.round(client.font.width(subtitle) * subtitleScale);
-        int contentWidth = Math.max(titleWidth, subtitleWidth);
 
         int x;
         int titleY;
@@ -90,7 +107,7 @@ public final class BiomeNotification {
             titleY = (screenHeight - contentHeight) / 2;
         } else {
             int panelWidth = Math.round(TOAST_WIDTH * sizeMultiplier);
-            int panelHeight = Math.round(TOAST_HEIGHT * sizeMultiplier);
+            int panelHeight = Math.round(12 * sizeMultiplier) + contentHeight;
 
             int panelX = switch (position) {
                 case TOP_LEFT, LEFT, BOTTOM_LEFT -> MARGIN;
@@ -115,20 +132,70 @@ public final class BiomeNotification {
             graphics.pose().scale(sizeMultiplier, sizeMultiplier);
             try {
                 renderingNotificationIcon = true;
-                graphics.fakeItem(new ItemStack(icon), 6, 8);
+                graphics.fakeItem(new ItemStack(icon), 6, Math.round((panelHeight / sizeMultiplier - 16) / 2.0F));
             } finally {
                 renderingNotificationIcon = false;
             }
             graphics.pose().popMatrix();
 
             x = panelX + Math.round((TOAST_ICON_SIZE + TOAST_TEXT_GAP) * sizeMultiplier);
-            titleY = panelY + Math.round(7 * sizeMultiplier);
+            titleY = panelY + (panelHeight - contentHeight) / 2;
             alignment = TextAlignment.LEFT;
         }
         renderSection(graphics, x, alignment, titleScale, titleY, alpha, title);
         if (!subtitle.getString().isEmpty()) {
             int subtitleY = titleY + (config.showAsToast ? Math.round(11 * sizeMultiplier) : titleHeight + SUBTITLE_GAP);
             renderSection(graphics, x, alignment, subtitleScale, subtitleY, alpha, subtitle);
+        }
+
+        if (!structureIcons.isEmpty()) {
+            int iconSize = config.showAsToast ? TOAST_STRUCTURE_ICON_SIZE : POPUP_STRUCTURE_ICON_SIZE;
+            int iconsWidth = structureIcons.size() * (iconSize + STRUCTURE_ICON_GAP) - STRUCTURE_ICON_GAP;
+            int iconsY;
+
+            if (config.showAsToast) {
+                iconsY = titleY + Math.round(11 * sizeMultiplier);
+                if (!subtitle.getString().isEmpty()) iconsY += subtitleHeight + Math.round(SUBTITLE_GAP * sizeMultiplier);
+
+                graphics.pose().pushMatrix();
+                graphics.pose().translate(x, iconsY);
+                graphics.pose().scale(subtitleScale, subtitleScale);
+
+                ActiveTextCollector renderer = graphics.textRenderer();
+                ActiveTextCollector.Parameters parameters = renderer.defaultParameters().withOpacity(alpha);
+                renderer.accept(TextAlignment.LEFT, 0, 0, parameters, Component.literal("Generates:"));
+
+                graphics.pose().popMatrix();
+            } else {
+                iconsY = titleY + titleHeight;
+                if (!subtitle.getString().isEmpty()) iconsY += subtitleHeight;
+                iconsY += SUBTITLE_GAP + (!subtitle.getString().isEmpty() ? 4 : 0);
+            }
+
+            graphics.pose().pushMatrix();
+            if (config.showAsToast) {
+                int labelWidth = Math.round(Minecraft.getInstance().font.width(Component.literal("Generates:")) * subtitleScale);
+                int labelHeight = Math.round(9 * subtitleScale);
+                int iconY = iconsY + (labelHeight - Math.round(iconSize * sizeMultiplier)) / 2 - 1;
+                graphics.pose().translate(x + labelWidth + Math.round(TOAST_STRUCTURE_LABEL_GAP * sizeMultiplier), iconY);
+            } else graphics.pose().translate((screenWidth - iconsWidth * sizeMultiplier) / 2.0F, iconsY);
+            graphics.pose().scale(sizeMultiplier, sizeMultiplier);
+            for (int i = 0; i < structureIcons.size(); i++) {
+                graphics.blit(
+                        RenderPipelines.GUI_TEXTURED,
+                        structureIcons.get(i).icon(),
+                        i * (iconSize + STRUCTURE_ICON_GAP),
+                        0,
+                        0,
+                        0,
+                        iconSize,
+                        iconSize,
+                        iconSize,
+                        iconSize,
+                        withAlpha(alpha)
+                );
+            }
+            graphics.pose().popMatrix();
         }
     }
 
@@ -164,10 +231,10 @@ public final class BiomeNotification {
         graphics.pose().popMatrix();
     }
 
-    private static int withAlpha(int colour, float opacity) {
-        int originalAlpha = (colour >>> 24) & 0xFF;
+    private static int withAlpha(float opacity) {
+        int originalAlpha = (-1 >>> 24) & 0xFF;
         int alpha = Math.round(originalAlpha * opacity);
 
-        return (colour & 0x00FFFFFF) | (alpha << 24);
+        return (0x00FFFFFF) | (alpha << 24);
     }
 }

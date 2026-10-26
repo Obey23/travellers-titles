@@ -66,9 +66,37 @@ public final class BiomeConfigScreen {
         );
 
         generalCategory.addEntry(
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.show_temperature"), config.showTemperature)
+                        .setDefaultValue(true)
+                        .setSaveConsumer(value -> config.showTemperature = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.show_rarity"), config.showRarity)
+                        .setDefaultValue(true)
+                        .setSaveConsumer(value -> config.showRarity = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
                 entries.startBooleanToggle(Component.translatable("travellers_titles.config.rarity_as_stars"), config.rarityAsStars)
                         .setDefaultValue(false)
                         .setSaveConsumer(value -> config.rarityAsStars = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.show_size"), config.showSize)
+                        .setDefaultValue(true)
+                        .setSaveConsumer(value -> config.showSize = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.show_structures"), config.showStructures)
+                        .setDefaultValue(true)
+                        .setSaveConsumer(value -> config.showStructures = value)
                         .build()
         );
 
@@ -181,6 +209,13 @@ public final class BiomeConfigScreen {
         );
 
         ConfigCategory soundCategory = builder.getOrCreateCategory(Component.translatable("travellers_titles.config.category.sounds"));
+
+        soundCategory.addEntry(
+                entries.startBooleanToggle(Component.translatable("travellers_titles.config.sounds.enabled"), config.enableBiomeSounds)
+                        .setDefaultValue(true)
+                        .setSaveConsumer(value -> config.enableBiomeSounds = value)
+                        .build()
+        );
 
         soundCategory.addEntry(
                 new NestedListListEntry<BiomeSoundEntry, MultiElementListEntry<BiomeSoundEntry>>(

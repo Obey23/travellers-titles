@@ -26,7 +26,12 @@ public final class BiomeConfig {
     public int popupSize = 100;
     public int toastSize = 100;
 
+    //
+    public boolean showTemperature = true;
+    public boolean showRarity = true;
     public boolean rarityAsStars = false;
+    public boolean showSize = true;
+    public boolean showStructures = true;
 
     // Confirmation (before showing popup)
     public int biomeConfirmationDelayMs = 1500;
@@ -37,6 +42,7 @@ public final class BiomeConfig {
     public TemperatureUnit temperatureUnit = TemperatureUnit.CELSIUS;
 
     // Biome Sounds
+    public boolean enableBiomeSounds = true;
     public static List<BiomeSoundEntry> createDefaultBiomeSounds() {
         return new ArrayList<>(List.of(
                 new BiomeSoundEntry("minecraft:cherry_grove", "minecraft:block.amethyst_block.chime", 2.0F, 1.0F),

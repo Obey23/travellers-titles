@@ -129,6 +129,29 @@ public record StructureInfo(Identifier id, Identifier icon, List<Identifier> bio
             "end_city",
             "end_midlands", "end_highlands"
     );
+    // Features
+    public static final StructureInfo BEE_NEST = create(
+            "features",
+            "bee_nest",
+            "meadow", "plains", "sunflower_plains",
+            "cherry_grove", "mangrove_swamp", "flower_forest",
+            "forest", "birch_forest", "old_growth_birch_forest"
+    );
+    public static final StructureInfo DESERT_WELL = create(
+            "features",
+            "desert_well",
+            "desert"
+    );
+    public static final StructureInfo FOREST_ROCK = create(
+            "features",
+            "forest_rock",
+            "old_growth_pine_taiga", "old_growth_spruce_taiga"
+    );
+    public static final StructureInfo FOSSIL = create(
+            "features",
+            "fossil",
+            "desert", "swamp", "mangrove_swamp"
+    );
 
     private static StructureInfo create(String category, String name, String... biomes) {
         return new StructureInfo(
@@ -163,7 +186,11 @@ public record StructureInfo(Identifier id, Identifier icon, List<Identifier> bio
             BASTION_REMNANT,
             NETHER_FORTRESS,
             NETHER_FOSSIL,
-            END_CITY
+            END_CITY,
+            BEE_NEST,
+            DESERT_WELL,
+            FOREST_ROCK,
+            FOSSIL
     );
 
     public static List<StructureInfo> getForBiome(Identifier biomeId) {

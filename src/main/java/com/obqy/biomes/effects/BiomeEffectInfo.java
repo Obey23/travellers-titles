@@ -59,7 +59,7 @@ public record BiomeEffectInfo(
         return new ParticleTextureSet("minecraft", "textures/particle/", textures, weight, foliageTint);
     }
 
-    // Leaves
+    // Regular Leaves tinted per-biome
     public static final BiomeEffectInfo LEAVES =
             new BiomeEffectInfo(
                     List.of(minecraftParticle(indexed("leaf_", 0, 11), 100, true)),
@@ -69,7 +69,8 @@ public record BiomeEffectInfo(
                     1.0F
             );
 
-    public static final BiomeEffectInfo PALE_LEAVES =
+    // Pale Oak leaves
+    public static final BiomeEffectInfo PALE_GARDEN =
             new BiomeEffectInfo(
                     List.of(minecraftParticle(indexed("pale_oak_", 0, 11), 100, false)),
                     null,
@@ -78,7 +79,8 @@ public record BiomeEffectInfo(
                     1.0F
             );
 
-    public static final BiomeEffectInfo CHERRY_PETALS =
+    // Cherry Blossom leaves
+    public static final BiomeEffectInfo CHERRY_GROVE =
             new BiomeEffectInfo(
                     List.of(minecraftParticle(indexed("cherry_", 0, 11), 100, false)),
                     null,
@@ -87,7 +89,8 @@ public record BiomeEffectInfo(
                     1.0F
             );
 
-    public static final BiomeEffectInfo AUTUMN_LEAVES =
+    // Dappled Forest leaf variants
+    public static final BiomeEffectInfo DAPPLED_FOREST =
             new BiomeEffectInfo(
                     List.of(minecraftParticle(
                             combineIndexed(List.of("orange_poplar_", "red_poplar_", "yellow_poplar_"), 1, 4 ),
@@ -100,10 +103,56 @@ public record BiomeEffectInfo(
                     1.0F
             );
 
-    // Flowers
-    public static final BiomeEffectInfo FLOWERS =
+    // Flowers that generate in the Meadow
+    public static final BiomeEffectInfo MEADOW =
             new BiomeEffectInfo(
-                    List.of(new ParticleTextureSet("travellers-titles", "textures/biome_particles/flowers/", indexed("flower_", 0, 7), 100, false)),
+                    List.of(
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/wildflowers/", indexed("wildflowers_", 0, 7), 16, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/dandelion/", indexed("dandelion_", 0, 2), 16, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/cornflower/", indexed("cornflower_", 0, 2), 16, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/poppy/", indexed("poppy_", 0, 2), 16, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/allium/", indexed("allium_", 0, 3), 20, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/oxeye_daisy/", indexed("oxeye_daisy_", 0, 3), 16, false)
+                    ),
+                    null,
+                    false,
+                    100L,
+                    1.0F
+            );
+
+    // Flowers that generate in a Flower Forest
+    public static final BiomeEffectInfo FLOWER_FOREST =
+            new BiomeEffectInfo(
+                    List.of(
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/dandelion/", indexed("dandelion_", 0, 2), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/cornflower/", indexed("cornflower_", 0, 2), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/poppy/", indexed("poppy_", 0, 2), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/allium/", indexed("allium_", 0, 3), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/oxeye_daisy/", indexed("oxeye_daisy_", 0, 3), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/red_tulip/", indexed("red_tulip_", 0, 2), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/orange_tulip/", indexed("orange_tulip_", 0, 2), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/pink_tulip/", indexed("pink_tulip_", 0, 2), 3, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/white_tulip/", indexed("white_tulip_", 0, 2), 3, false),
+                            minecraftParticle(indexed("leaf_", 0, 11), 73, true)
+                    ),
+                    null,
+                    false,
+                    100L,
+                    1.0F
+            );
+
+    // Mainly the "Sunflower" texture plus flowers that generate there
+    public static final BiomeEffectInfo SUNFLOWER_PLAINS =
+            new BiomeEffectInfo(
+                    List.of(
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/dandelion/", indexed("dandelion_", 0, 2), 40, false), // Should be sunflower, but no point having 2 nearly identical texture groups, nobody's gonna know yk?
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/cornflower/", indexed("cornflower_", 0, 2), 10, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/oxeye_daisy/", indexed("oxeye_daisy_", 0, 3), 10, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/red_tulip/", indexed("red_tulip_", 0, 2), 10, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/orange_tulip/", indexed("orange_tulip_", 0, 2), 10, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/pink_tulip/", indexed("pink_tulip_", 0, 2), 10, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/white_tulip/", indexed("white_tulip_", 0, 2), 10, false)
+                    ),
                     null,
                     false,
                     100L,
@@ -111,10 +160,10 @@ public record BiomeEffectInfo(
             );
 
     // Flowers + Leaves, for Birch Forests
-    public static final BiomeEffectInfo FLOWERS_AND_LEAVES =
+    public static final BiomeEffectInfo BIRCH_FOREST =
             new BiomeEffectInfo(
                     List.of(
-                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/flowers/", indexed("flower_", 0, 7), 25, false),
+                            new ParticleTextureSet("travellers-titles", "textures/biome_particles/wildflowers/", indexed("wildflowers_", 0, 7), 25, false),
                             minecraftParticle(indexed("leaf_", 0, 11), 75, true)
                     ),
                     null,
@@ -158,7 +207,7 @@ public record BiomeEffectInfo(
                     false
             );
 
-    // Deep Dark
+    // Sculk souls and popping bubbles
     public static final BiomeEffectInfo SCULK =
             new BiomeEffectInfo(
                     List.of(minecraftParticle(indexed("sculk_soul_", 0, 10), 80, false)),
@@ -168,7 +217,7 @@ public record BiomeEffectInfo(
                     0.5F
             );
 
-    // Noxious Gas, animated particles only
+    // Sulfur gas particles
     public static final BiomeEffectInfo NOXIOUS_GAS =
             new BiomeEffectInfo(
                     List.of(),
@@ -178,18 +227,18 @@ public record BiomeEffectInfo(
                     0.25F
             );
 
-    // Souls, animated particles only
-    public static final BiomeEffectInfo SOULS =
+    // Animated souls moving upward
+    public static final BiomeEffectInfo SOUL_SAND_VALLEY =
             new BiomeEffectInfo(
                     List.of(),
                     minecraftParticle(indexed("soul_", 0, 10), 100, false),
                     true,
-                    150L,
+                    250L,
                     0.5F
             );
 
-    // Fireflies
-    public static final BiomeEffectInfo FIREFLIES =
+    // Fireflies moving sporadically
+    public static final BiomeEffectInfo SWAMP =
             new BiomeEffectInfo(
                     List.of(minecraftParticle(List.of("firefly.png"), 100, false)),
                     null,
@@ -201,7 +250,7 @@ public record BiomeEffectInfo(
             );
 
     // Spore Blossom Textures
-    public static final BiomeEffectInfo LUSH =
+    public static final BiomeEffectInfo LUSH_CAVES =
             new BiomeEffectInfo(
                     List.of(new ParticleTextureSet("travellers-titles", "textures/biome_particles/lush/", indexed("spore_blossom_", 0, 7), 100, false)),
                     null,
@@ -214,7 +263,6 @@ public record BiomeEffectInfo(
             Map.ofEntries(
                     // Forest biomes
                     Map.entry("minecraft:forest", LEAVES),
-                    Map.entry("minecraft:flower_forest", LEAVES),
                     Map.entry("minecraft:dark_forest", LEAVES),
                     Map.entry("minecraft:windswept_forest", LEAVES),
                     Map.entry("minecraft:taiga", LEAVES),
@@ -228,20 +276,21 @@ public record BiomeEffectInfo(
                     Map.entry("minecraft:wooded_badlands", LEAVES),
 
                     // Swamps
-                    Map.entry("minecraft:swamp", FIREFLIES),
-                    Map.entry("minecraft:mangrove_swamp", FIREFLIES),
+                    Map.entry("minecraft:swamp", SWAMP),
+                    Map.entry("minecraft:mangrove_swamp", SWAMP),
 
                     // Special forests
-                    Map.entry("minecraft:birch_forest", FLOWERS_AND_LEAVES),
-                    Map.entry("minecraft:old_growth_birch_forest", FLOWERS_AND_LEAVES),
-                    Map.entry("minecraft:dappled_forest", AUTUMN_LEAVES),
-                    Map.entry("minecraft:cherry_grove", CHERRY_PETALS),
-                    Map.entry("minecraft:pale_garden", PALE_LEAVES),
+                    Map.entry("minecraft:flower_forest", FLOWER_FOREST),
+                    Map.entry("minecraft:birch_forest", BIRCH_FOREST),
+                    Map.entry("minecraft:old_growth_birch_forest", BIRCH_FOREST),
+                    Map.entry("minecraft:dappled_forest", DAPPLED_FOREST),
+                    Map.entry("minecraft:cherry_grove", CHERRY_GROVE),
+                    Map.entry("minecraft:pale_garden", PALE_GARDEN),
 
                     // Misc overworld
-                    Map.entry("minecraft:meadow", FLOWERS),
-                    Map.entry("minecraft:sunflower_plains", FLOWERS),
-                    Map.entry("minecraft:lush_caves", LUSH),
+                    Map.entry("minecraft:meadow", MEADOW),
+                    Map.entry("minecraft:sunflower_plains", SUNFLOWER_PLAINS),
+                    Map.entry("minecraft:lush_caves", LUSH_CAVES),
 
                     // Water biomes
                     Map.entry("minecraft:ocean", BUBBLES),
@@ -271,7 +320,7 @@ public record BiomeEffectInfo(
                     Map.entry("minecraft:sulfur_caves", NOXIOUS_GAS),
 
                     // Nether
-                    Map.entry("minecraft:soul_sand_valley", SOULS)
+                    Map.entry("minecraft:soul_sand_valley", SOUL_SAND_VALLEY)
             );
 
     public static BiomeEffectInfo get(String biomeId) {

@@ -31,7 +31,7 @@ Travellers Titles implements Cloth Config + ModMenu elegantly, allowing you to:
 - Adjust or remove delays and cooldowns on popups/toasts.
 - Toggle between normal and freedom units. (for estimated temperature)
 - Toggle and adjust custom particles. (density, opacity, size, duration, speed, transitions)
-- Toggle entry sounds and add or remove custom overrides.
+- Toggle entry sounds and add or remove custom overrides. (Supports [Biome Tags](https://minecraft.wiki/w/Biome_tag_(Java_Edition)))\
 All from within your client! (Optional, JSON configuration available)
 
 ---

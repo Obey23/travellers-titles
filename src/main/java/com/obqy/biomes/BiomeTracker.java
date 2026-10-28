@@ -3,6 +3,7 @@ package com.obqy.biomes;
 import com.obqy.biomes.effects.BiomeParticleEffect;
 import com.obqy.biomes.sounds.BiomeSoundManager;
 import com.obqy.config.BiomeConfig;
+import com.obqy.config.enums.UndergroundDetectionMode;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -33,6 +34,13 @@ public class BiomeTracker {
             var biome = level.getBiome(pos);
             var biomeKey = biome.unwrapKey().orElse(null);
             if (biomeKey == null) return;
+
+            if (!shouldTrackBiome(client, biome)) {
+                lastBiome = null;
+                pendingBiome = null;
+                pendingSince = 0L;
+                return;
+            }
 
             long now = System.currentTimeMillis();
 
@@ -71,6 +79,34 @@ public class BiomeTracker {
 
             handleNewBiome(client, biomeKey, biome);
         });
+    }
+
+    private static boolean shouldTrackBiome(Minecraft client, Holder<Biome> biome) {
+        if (config.undergroundDetectionMode == UndergroundDetectionMode.NONE) return true;
+        // Underground biomes are exempt
+        if (isUndergroundBiome(biome)) return true;
+
+        var level = client.player.level();
+        var pos = client.player.blockPosition();
+
+        return switch (config.undergroundDetectionMode) {
+            case NONE -> true;
+            case CAN_SEE_SKY -> level.canSeeSky(pos);
+            case SKY_LIGHT -> level.getBrightness(net.minecraft.world.level.LightLayer.SKY, pos) >= config.undergroundSkyLightThreshold;
+            case Y_LEVEL -> pos.getY() >= config.undergroundMinYLevel;
+        };
+    }
+
+    private static boolean isUndergroundBiome(Holder<Biome> biome) {
+        return biome.unwrapKey().map(key ->
+            switch (key.identifier().toString()) {
+                case "minecraft:deep_dark",
+                     "minecraft:dripstone_caves",
+                     "minecraft:lush_caves",
+                     "minecraft:sulfur_caves" -> true;
+                    default -> false;
+                })
+                .orElse(false);
     }
 
     private static void handleNewBiome(Minecraft client, ResourceKey<Biome> biomeKey, Holder<Biome> biomeHolder) {

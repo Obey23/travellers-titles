@@ -7,6 +7,7 @@ import com.obqy.biomes.sounds.BiomeSoundEntry;
 import com.obqy.config.enums.NotificationPosition;
 import com.obqy.config.enums.TemperatureDisplayMode;
 import com.obqy.config.enums.TemperatureUnit;
+import com.obqy.config.enums.UndergroundDetectionMode;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -36,6 +37,11 @@ public final class BiomeConfig {
     // Confirmation (before showing popup)
     public int biomeConfirmationDelayMs = 1500;
     public int biomeNotificationCooldownMs = 2000;
+
+    // Underground Detection / Toggle
+    public UndergroundDetectionMode undergroundDetectionMode = UndergroundDetectionMode.SKY_LIGHT;
+    public int undergroundSkyLightThreshold = 7;
+    public int undergroundMinYLevel = 48;
 
     // Temperature Display
     public TemperatureDisplayMode temperatureDisplayMode = TemperatureDisplayMode.MINECRAFT;

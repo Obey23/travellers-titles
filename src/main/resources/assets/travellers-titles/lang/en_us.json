@@ -52,6 +52,17 @@
   "travellers_titles.config.temperature_unit.celsius": "Celsius",
   "travellers_titles.config.temperature_unit.fahrenheit": "Fahrenheit",
 
+  "travellers_titles.config.underground_detection_mode": "Underground Detection Mode",
+  "travellers_titles.config.underground_detection_mode.tooltip": "How should we detect if you're underground to enable cave-only notifications?",
+  "travellers_titles.config.underground_sky_light_threshold": "Underground Sky Light Threshold",
+  "travellers_titles.config.underground_sky_light_threshold.tooltip": "At which light level should \"Sky Light\" detection kick in?",
+  "travellers_titles.config.underground_min_y_level": "Underground Minimum Y Level",
+  "travellers_titles.config.underground_min_y_level.tooltip": "At which light level should \"Y Level\" detection kick in?",
+  "travellers_titles.config.temperature_display_mode.none": "None",
+  "travellers_titles.config.temperature_display_mode.can_see_sky": "Can See Sky",
+  "travellers_titles.config.temperature_display_mode.sky_light": "Sky Light",
+  "travellers_titles.config.temperature_display_mode.y_level": "Y Level",
+
   "travellers_titles.config.category.particles": "Biome Particles",
   "travellers_titles.config.particles.enable": "Enable Particles",
   "travellers_titles.config.particles.density": "Particle Density",

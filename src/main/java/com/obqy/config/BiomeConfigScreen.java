@@ -4,6 +4,7 @@ import com.obqy.biomes.sounds.BiomeSoundEntry;
 import com.obqy.config.enums.NotificationPosition;
 import com.obqy.config.enums.TemperatureDisplayMode;
 import com.obqy.config.enums.TemperatureUnit;
+import com.obqy.config.enums.UndergroundDetectionMode;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -127,6 +128,31 @@ public final class BiomeConfigScreen {
                         .setDefaultValue(TemperatureUnit.CELSIUS)
                         .setEnumNameProvider(value -> Component.translatable("travellers_titles.config.temperature_unit." + value.name().toLowerCase(java.util.Locale.ROOT)))
                         .setSaveConsumer(value -> config.temperatureUnit = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startEnumSelector(Component.translatable("travellers_titles.config.underground_detection_mode"), UndergroundDetectionMode.class, config.undergroundDetectionMode)
+                        .setDefaultValue(UndergroundDetectionMode.SKY_LIGHT)
+                        .setTooltip(Component.translatable("travellers_titles.config.underground_detection_mode.tooltip"))
+                        .setEnumNameProvider(value -> Component.translatable("travellers_titles.config.temperature_display_mode." + value.name().toLowerCase(java.util.Locale.ROOT)))
+                        .setSaveConsumer(value -> config.undergroundDetectionMode = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startIntSlider(Component.translatable("travellers_titles.config.underground_sky_light_threshold"), config.undergroundSkyLightThreshold, 0, 15)
+                        .setTooltip(Component.translatable("travellers_titles.config.underground_sky_light_threshold.tooltip"))
+                        .setDefaultValue(7)
+                        .setSaveConsumer(value -> config.undergroundSkyLightThreshold = value)
+                        .build()
+        );
+
+        generalCategory.addEntry(
+                entries.startIntSlider(Component.translatable("travellers_titles.config.underground_min_y_level"), config.undergroundMinYLevel, -64, 320)
+                        .setTooltip(Component.translatable("travellers_titles.config.underground_min_y_level.tooltip"))
+                        .setDefaultValue(48)
+                        .setSaveConsumer(value -> config.undergroundMinYLevel = value)
                         .build()
         );
 

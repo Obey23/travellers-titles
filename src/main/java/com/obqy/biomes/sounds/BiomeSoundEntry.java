@@ -1,4 +1,4 @@
-package com.obqy.biomes;
+package com.obqy.biomes.sounds;
 
 public class BiomeSoundEntry {
     public String biomeId = "minecraft:cherry_grove";

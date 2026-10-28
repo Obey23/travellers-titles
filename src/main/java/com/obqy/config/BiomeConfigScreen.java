@@ -1,6 +1,6 @@
 package com.obqy.config;
 
-import com.obqy.biomes.BiomeSoundEntry;
+import com.obqy.biomes.sounds.BiomeSoundEntry;
 import com.obqy.config.enums.NotificationPosition;
 import com.obqy.config.enums.TemperatureDisplayMode;
 import com.obqy.config.enums.TemperatureUnit;
@@ -229,12 +229,7 @@ public final class BiomeConfigScreen {
                         true,
                         true,
                         (sound, _) -> {
-                            BiomeSoundEntry value = sound != null ? sound : new BiomeSoundEntry(
-                                    "minecraft:a_biome",
-                                    "minecraft:some.minecraft.sound",
-                                    0.8F,
-                                    1.0F
-                            );
+                            BiomeSoundEntry value = sound != null ? sound : new BiomeSoundEntry();
 
                             return new MultiElementListEntry<>(
                                     Component.literal(value.biomeId == null ? "Biome sound" : value.biomeId),

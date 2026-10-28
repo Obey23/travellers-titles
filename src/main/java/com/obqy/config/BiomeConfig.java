@@ -3,7 +3,7 @@ package com.obqy.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.obqy.TravellersTitles;
-import com.obqy.biomes.BiomeSoundEntry;
+import com.obqy.biomes.sounds.BiomeSoundEntry;
 import com.obqy.config.enums.NotificationPosition;
 import com.obqy.config.enums.TemperatureDisplayMode;
 import com.obqy.config.enums.TemperatureUnit;

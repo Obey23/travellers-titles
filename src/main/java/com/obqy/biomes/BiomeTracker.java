@@ -1,6 +1,7 @@
 package com.obqy.biomes;
 
 import com.obqy.biomes.effects.BiomeParticleEffect;
+import com.obqy.biomes.sounds.BiomeSoundManager;
 import com.obqy.config.BiomeConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
@@ -119,6 +120,6 @@ public class BiomeTracker {
         }
 
         BiomeNotification.show(title, subtitle, info, biomeKey.identifier());
-        if (config.enableBiomeSounds) BiomeSoundManager.playBiomeSound(client, biomeKey.identifier().toString(), info.rarity());
+        if (config.enableBiomeSounds) BiomeSoundManager.playBiomeSound(client, biomeHolder, info.rarity());
     }
 }

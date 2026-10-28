@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
 public class BiomeTracker {
@@ -85,6 +86,8 @@ public class BiomeTracker {
         if (config.undergroundDetectionMode == UndergroundDetectionMode.NONE) return true;
         // Underground biomes are exempt
         if (isUndergroundBiome(biome)) return true;
+        // If not in overworld, always track
+        if (client.level.dimension() != Level.OVERWORLD) return true;
 
         var level = client.player.level();
         var pos = client.player.blockPosition();
